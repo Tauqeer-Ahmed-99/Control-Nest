@@ -9,6 +9,7 @@ const Settings = () => {
     <View
       style={{
         flex: 1,
+        paddingBottom: 90,
         backgroundColor: theme.colors.primary,
       }}
     >

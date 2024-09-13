@@ -3,11 +3,12 @@ import { ApiRoutes } from "@/routes/routes";
 import { ApiResponse } from "@/utils/models";
 
 type CreatedRoom = {
-  houseId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  roomId: string;
-  roomName: string | null;
+  room_id: string;
+  room_name: string;
+  house_id: string;
+  created_at: string;
+  updated_at: string;
+  devices: [];
 };
 
 export type RoomMutationResponse = ApiResponse<CreatedRoom>;

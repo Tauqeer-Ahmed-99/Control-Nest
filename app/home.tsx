@@ -27,7 +27,7 @@ const HousePage = () => {
       }}
     >
       <UserProfile />
-      <View style={{ paddingHorizontal: 18, flex: 1 }}>
+      <View style={{ paddingHorizontal: 18, flex: 1, paddingBottom: 90 }}>
         <ScrollView>
           <Summary />
           <Rooms />

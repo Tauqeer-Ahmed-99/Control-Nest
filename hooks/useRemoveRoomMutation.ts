@@ -1,20 +1,13 @@
 import { ApiResponse } from "@/utils/models";
 import useApiMutation from "./useApiMutation";
 import { ApiRoutes } from "@/routes/routes";
+import { HTTPMethod } from "@/utils/network";
 
-type DeletedRoom = {
-  houseId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  roomId: string;
-  roomName: string | null;
-};
-
-export type RoomMutationResponse = ApiResponse<DeletedRoom>;
+export type RoomMutationResponse = ApiResponse<string>;
 
 const useRemoveRoomMutation = () => {
   return useApiMutation<RoomMutationResponse>(ApiRoutes.RemoveRoom, {
-    method: "DELETE",
+    method: HTTPMethod.DELETE,
   });
 };
 

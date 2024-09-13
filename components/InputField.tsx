@@ -8,12 +8,14 @@ const InputField = ({
   value,
   defaultValue,
   onChangeText,
+  disabled,
 }: {
   label?: string;
   placeholder?: string;
   value?: string;
   defaultValue?: string;
   onChangeText?: (text: string) => void;
+  disabled?: boolean;
 }) => {
   const {
     theme: {
@@ -38,6 +40,7 @@ const InputField = ({
       value={value}
       defaultValue={defaultValue}
       onChangeText={onChangeText}
+      disabled={disabled}
     />
   );
 };

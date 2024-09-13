@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useWindowDimensions, View } from "react-native";
 import BorderContainer from "./BorderContainer";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router, usePathname } from "expo-router";
 import { TouchableOpacity } from "react-native";
 import { getTypedRoute } from "@/routes/routes";
-import { useTheme } from "@rneui/themed";
+import { BottomSheet, useTheme } from "@rneui/themed";
+import AddRoomForm from "./AddRoomForm";
+import AddDeviceForm from "./AddDeviceForm";
 
 const bottomNavItems: {
   name: string;
@@ -52,65 +54,97 @@ const BottomNavigation = () => {
     },
   } = useTheme();
   const { width: windowWidth } = useWindowDimensions();
+  const [isAddRoomFormOpen, setIsAddRoomFormOpen] = useState(false);
+  const [isAddDeviceFormOpen, setIsAddDeviceFormOpen] = useState(false);
+
   const bottomNavIslandWidth = windowWidth - 32;
 
   const pathname = usePathname();
 
   return (
-    <View
-      style={{
-        marginHorizontal: 16,
-        position: "absolute",
-        bottom: 16,
-        zIndex: 999,
-        height: 70,
-        width: bottomNavIslandWidth,
-        backgroundColor: secondary,
-        opacity: 0.8,
-        borderRadius: 35,
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}
-    >
-      {bottomNavItems.map((navItem) =>
-        pathname === navItem.path || navItem.path === "/create" ? (
-          <TouchableOpacity
-            key={navItem.label}
-            onPress={navItem.path === "/create" ? () => {} : undefined}
-          >
-            <BorderContainer
-              borderWidth={2}
-              style={{
-                height: 35,
-                width: 35,
-                borderRadius: 20,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+    <>
+      <View
+        style={{
+          marginHorizontal: 16,
+          position: "absolute",
+          bottom: 16,
+          zIndex: 999,
+          height: 70,
+          width: bottomNavIslandWidth,
+          backgroundColor: secondary,
+          // opacity: 0.8,
+          elevation: 5,
+          borderRadius: 35,
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        {bottomNavItems.map((navItem) =>
+          pathname === navItem.path || navItem.path === "/create" ? (
+            <TouchableOpacity
+              key={navItem.label}
+              onPress={
+                navItem.path === "/create"
+                  ? () => {
+                      if (pathname === "/home") {
+                        setIsAddRoomFormOpen(true);
+                      } else if (
+                        pathname === "/devices" ||
+                        pathname.startsWith("/room/")
+                      ) {
+                        setIsAddDeviceFormOpen(true);
+                      }
+                      console.log(pathname);
+                    }
+                  : undefined
+              }
             >
-              {navItem.icon}
-            </BorderContainer>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            key={navItem.label}
-            onPress={() => router.replace(getTypedRoute(navItem.path))}
-          >
-            <View
-              style={{
-                height: 35,
-                width: 35,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              <BorderContainer
+                borderWidth={2}
+                style={{
+                  height: 35,
+                  width: 35,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {navItem.icon}
+              </BorderContainer>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              key={navItem.label}
+              onPress={() => router.replace(getTypedRoute(navItem.path))}
             >
-              {navItem.icon}
-            </View>
-          </TouchableOpacity>
-        ),
-      )}
-    </View>
+              <View
+                style={{
+                  height: 35,
+                  width: 35,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {navItem.icon}
+              </View>
+            </TouchableOpacity>
+          ),
+        )}
+      </View>
+      <BottomSheet
+        isVisible={isAddRoomFormOpen}
+        onBackdropPress={() => setIsAddRoomFormOpen(false)}
+      >
+        <AddRoomForm closeForm={() => setIsAddRoomFormOpen(false)} />
+      </BottomSheet>
+      <BottomSheet
+        isVisible={isAddDeviceFormOpen}
+        onBackdropPress={() => setIsAddDeviceFormOpen(false)}
+      >
+        <AddDeviceForm closeForm={() => setIsAddDeviceFormOpen(false)} />
+      </BottomSheet>
+    </>
   );
 };
 

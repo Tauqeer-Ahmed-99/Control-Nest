@@ -1,3 +1,6 @@
+import { useDevicesData } from "@/hooks/useHouse";
+import useWeather from "@/hooks/useWeather";
+import useWeatherIcons from "@/hooks/useWeatherIcon";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -36,13 +39,12 @@ const summaryItems: ISummaryItem[] = [
   },
 ];
 
-const GAP = 50;
+const GAP = 30;
 const BORDER_WIDTH = summaryItems.length * 2 * 5;
 const PADDING_HORIZONTAL = 12 * 2;
 
 const SummaryCard = ({ summaryItem }: { summaryItem: ISummaryItem }) => {
   const { width } = useWindowDimensions();
-
   const cardWidth =
     (width - BORDER_WIDTH - GAP - PADDING_HORIZONTAL) / summaryItems.length;
 
@@ -73,6 +75,22 @@ const SummaryCard = ({ summaryItem }: { summaryItem: ISummaryItem }) => {
 };
 
 const Summary = () => {
+  const devices = useDevicesData();
+  const { data: weather, isLoading: isWeatherLoading } = useWeather();
+  const icon = useWeatherIcons(weather?.current.condition.text ?? "");
+
+  console.log(weather);
+
+  summaryItems[0].icon = icon;
+  summaryItems[0].primaryText = `${weather?.current?.temp_c ?? ""}°C`;
+  summaryItems[0].secondaryText = isWeatherLoading
+    ? "Loading"
+    : weather?.location?.name ?? "";
+
+  summaryItems[1].primaryText = devices
+    ? devices.filter((device) => device.status).length.toString()
+    : "0";
+
   return (
     <View
       style={{

@@ -15,6 +15,14 @@ const useHouse = (searchParams: UserHouseSearchParams) => {
   });
 };
 
+export const useHouseData = () => {
+  const { data } = useQuery<UserHouseResponse>({
+    queryKey: [ApiRoutes.UserHouse],
+  });
+
+  return data?.data;
+};
+
 export const useRoomData = (roomId: string) => {
   const { data } = useQuery<UserHouseResponse>({
     queryKey: [ApiRoutes.UserHouse],
@@ -39,6 +47,14 @@ export const useDeviceData = (roomId: string, deviceId: string) => {
   return data?.data?.rooms
     ?.find((room) => room.room_id === roomId)
     ?.devices.find((device) => device.device_id === deviceId);
+};
+
+export const useDevicesData = () => {
+  const { data } = useQuery<UserHouseResponse>({
+    queryKey: [ApiRoutes.UserHouse],
+  });
+
+  return data?.data.rooms.flatMap((room) => room.devices);
 };
 
 export default useHouse;

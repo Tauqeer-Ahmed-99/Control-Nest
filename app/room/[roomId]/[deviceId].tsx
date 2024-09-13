@@ -213,16 +213,24 @@ const Device = () => {
   );
 
   const handleGPIOPinChange = useCallback(
-    (newValue: number, index: number) => {
+    (newValue: any, index: number) => {
       setDevice(
-        (device) => ({ ...device, pin_number: newValue } as DeviceType),
+        (device) =>
+          ({ ...device, pin_number: newValue.gpio_pin_number } as DeviceType),
       );
     },
     [device, availableGPIOPins, selectedPinConfig],
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: primary, padding: 16 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: primary,
+        padding: 16,
+        paddingBottom: 90,
+      }}
+    >
       <ScrollView
         keyboardShouldPersistTaps="always"
         keyboardDismissMode="on-drag"

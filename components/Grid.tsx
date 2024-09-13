@@ -18,7 +18,7 @@ interface GridProps<T> {
 }
 
 function Grid<T>({ items, renderItem, rowSize, rowGap }: GridProps<T>) {
-  const data = useMemo(() => chunkArray(items, rowSize ?? 2), items);
+  const data = useMemo(() => chunkArray(items, rowSize ?? 2), [items.length]);
 
   return (
     <View>

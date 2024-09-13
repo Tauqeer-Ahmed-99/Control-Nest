@@ -24,7 +24,7 @@ function Select<T>({
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <Picker
-            selectedValue={(selectedValue ?? ({} as unknown as any))[field]}
+            selectedValue={selectedValue ?? {}}
             onValueChange={onValueChange}
             style={styles.picker}
             itemStyle={styles.pickerItem}
@@ -41,7 +41,7 @@ function Select<T>({
                 <Picker.Item
                   key={index}
                   label={(item as unknown as any)[field]}
-                  value={(item as unknown as any)[field]}
+                  value={item}
                 />
               ))
             )}

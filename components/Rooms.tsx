@@ -7,6 +7,8 @@ import useHouse from "@/hooks/useHouse";
 import Grid from "./Grid";
 import Header from "./Header";
 import RoomCard from "./RoomCard";
+import { router } from "expo-router";
+import { getTypedRoute, Routes } from "@/routes/routes";
 
 const Rooms = () => {
   const { userProfile } = useAuth();
@@ -36,7 +38,10 @@ const Rooms = () => {
 
   return (
     <View>
-      <Header heading="Rooms" onDetails={() => {}} />
+      <Header
+        heading="Rooms"
+        onDetails={() => router.push(getTypedRoute(Routes.Rooms))}
+      />
       <Grid
         items={rooms}
         renderItem={(room) => <RoomCard key={room.room_id} room={room} />}
