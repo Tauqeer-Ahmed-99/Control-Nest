@@ -1,3 +1,4 @@
+import { useTheme } from "@rneui/themed";
 import React, { useEffect, useRef } from "react";
 import { Animated, StyleSheet, Easing } from "react-native";
 
@@ -12,6 +13,12 @@ const LoadingSkeleton = ({
   borderRadius?: number;
   startOpacity?: number;
 }) => {
+  const {
+    theme: {
+      colors: { secondary },
+    },
+  } = useTheme();
+
   const fadeAnim = useRef(new Animated.Value(startOpacity ?? 0.3)).current;
 
   useEffect(() => {
@@ -33,6 +40,13 @@ const LoadingSkeleton = ({
     ).start();
   }, [fadeAnim]);
 
+  const styles = StyleSheet.create({
+    skeleton: {
+      backgroundColor: secondary,
+      borderRadius: 4,
+    },
+  });
+
   return (
     <Animated.View
       style={[
@@ -43,12 +57,5 @@ const LoadingSkeleton = ({
     />
   );
 };
-
-const styles = StyleSheet.create({
-  skeleton: {
-    backgroundColor: "#d1d1d1",
-    borderRadius: 4,
-  },
-});
 
 export default LoadingSkeleton;

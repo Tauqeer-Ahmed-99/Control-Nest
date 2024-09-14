@@ -33,8 +33,8 @@ export const ExpectedHTTPStatuses: HTTPStatus[] = [
   HTTPStatus.ServiceUnavailable,
 ];
 
-const request = (url: string, config: ApiConfig) => {
-  const fullUrl = new URL(url, "https://rpi4.nmt-solutions.in/");
+const request = (baseUrl: string, url: string, config: ApiConfig) => {
+  const fullUrl = new URL(url, baseUrl);
 
   const { searchParams, body, method = HTTPMethod.GET, headers } = config;
 

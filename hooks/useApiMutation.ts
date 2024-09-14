@@ -4,19 +4,25 @@ import {
   UseMutationResult,
   useMutation,
 } from "@tanstack/react-query";
+import useMobileStorageData from "./useMobileStorageData";
 
 const useApiMutation = <T>(
   url: string,
   config?: ApiConfig,
   options?: UseMutationOptions<T, Error, unknown, unknown>,
 ): UseMutationResult<T, Error> => {
+  const { data: controllerDeviceUrl } = useMobileStorageData(
+    "controller-device-url",
+  );
+  const baseUrl = controllerDeviceUrl as string;
   return useMutation({
     mutationKey: [url],
     mutationFn: async (body) => {
-      const response = await request(url, {
+      const response = await request(baseUrl, url, {
         method: HTTPMethod.POST,
         ...config,
         body: body as any,
+        searchParams: { ...(body as any).searchParams },
       });
 
       if (!response.ok) {

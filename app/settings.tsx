@@ -1,4 +1,3 @@
-import BottomNavigation from "@/components/BottomNavigation";
 import { Text, useTheme } from "@rneui/themed";
 import React from "react";
 import { View } from "react-native";
@@ -14,7 +13,6 @@ const Settings = () => {
       }}
     >
       <Text>Settings</Text>
-      {/* <BottomNavigation /> */}
     </View>
   );
 };

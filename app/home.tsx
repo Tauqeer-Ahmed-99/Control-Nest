@@ -1,24 +1,40 @@
-import { View } from "react-native";
-import { Text, useTheme } from "@rneui/themed";
-import UserProfile from "@/components/UserProfile";
-import useAuth from "@/hooks/useAuth";
-import useHouseMember from "@/hooks/useHouseMember";
-import { ResponseStatusCodes } from "@/utils/models";
-import Summary from "@/components/Summary";
-import { ScrollView } from "react-native-virtualized-view";
-import Rooms from "@/components/Rooms";
 import BottomNavigation from "@/components/BottomNavigation";
+import Rooms from "@/components/Rooms";
+import Summary from "@/components/Summary";
+import UserProfile from "@/components/UserProfile";
+import useUpdateHeaderTitle from "@/hooks/useUpdateHeaderTitle";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Text, useTheme } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
+import { TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 
-const HouseLogin = () => {
-  return (
-    <View>
-      <Text>Login to house</Text>
-    </View>
-  );
-};
-
-const HousePage = () => {
+const Home = () => {
   const { theme } = useTheme();
+  const queryClient = useQueryClient();
+
+  const DevelopmentHelpers = (
+    <TouchableOpacity
+      onPress={async () => {
+        await AsyncStorage.multiRemove([
+          "controller-device-name",
+          "controller-device-url",
+        ]);
+        queryClient.invalidateQueries({
+          queryKey: ["mobile-storage", "controller-device-name"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["mobile-storage", "controller-device-url"],
+        });
+      }}
+    >
+      <Text>Clear Mobile Storage</Text>
+    </TouchableOpacity>
+  );
+  useUpdateHeaderTitle(
+    "Home",
+    process.env.NODE_ENV === "development" ? DevelopmentHelpers : undefined,
+  );
   return (
     <View
       style={{
@@ -36,38 +52,6 @@ const HousePage = () => {
       <BottomNavigation />
     </View>
   );
-};
-
-const Home = () => {
-  const { userProfile } = useAuth();
-  const {
-    data: houseMemberData,
-    error: houseMemberError,
-    isPending: isPendingHouseMemberDataa,
-  } = useHouseMember({
-    userId: userProfile?.id as string,
-  });
-
-  if (isPendingHouseMemberDataa) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
-  if (!houseMemberData) {
-    return (
-      <View>
-        <Text>{houseMemberError.message}</Text>
-      </View>
-    );
-  }
-
-  if (houseMemberData.status_code !== ResponseStatusCodes.REQUEST_FULLFILLED)
-    return <HouseLogin />;
-
-  return <HousePage />;
 };
 
 export default Home;

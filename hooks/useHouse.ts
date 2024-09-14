@@ -34,7 +34,7 @@ export const useRoomsData = () => {
   const { userProfile } = useAuth();
   const { data } = useHouse({ userId: userProfile?.id as string });
 
-  return data?.data.rooms;
+  return data?.data?.rooms;
 };
 
 export const useDeviceData = (roomId: string, deviceId: string | "default") => {
@@ -56,7 +56,7 @@ export const useDevicesData = () => {
   const { userProfile } = useAuth();
   const { data } = useHouse({ userId: userProfile?.id as string });
 
-  return data?.data.rooms.flatMap((room) => room.devices);
+  return data?.data?.rooms.flatMap((room) => room.devices);
 };
 
 export default useHouse;

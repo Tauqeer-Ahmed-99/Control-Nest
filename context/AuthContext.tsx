@@ -111,7 +111,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       if (userProfile) {
         if (router.canDismiss()) router.dismissAll();
 
-        router.replace(getTypedRoute(Routes.Home));
+        router.replace(getTypedRoute(Routes.HouseLogin));
       } else {
         if (router.canDismiss()) router.dismissAll();
         router.replace(getTypedRoute(Routes.Auth));
@@ -124,7 +124,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       if (pathname === "/" || pathname === "index") {
         if (userProfile) {
           if (router.canDismiss()) router.dismissAll();
-          router.replace(getTypedRoute(Routes.Home));
+          router.replace(getTypedRoute(Routes.HouseLogin));
         } else {
           if (router.canDismiss()) router.dismissAll();
           router.replace(getTypedRoute(Routes.Auth));

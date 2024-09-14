@@ -32,6 +32,16 @@ const Rooms = () => {
     );
   }
 
+  const { data: roomData } = data;
+
+  if (!roomData) {
+    return (
+      <View>
+        <Text>Error</Text>
+      </View>
+    );
+  }
+
   const {
     data: { rooms },
   } = data;
