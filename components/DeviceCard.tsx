@@ -1,14 +1,70 @@
-import { getTypedRoute, Routes } from "@/routes/routes";
+import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
+import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
 import { Device } from "@/utils/models";
 import { Text } from "@rneui/themed";
 import { router } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
+import useAuth from "@/hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
+import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import { useState } from "react";
 
 const DeviceCard = ({ device }: { device: Device }) => {
-  const [status, setStatus] = useState(false);
+  // const [status, setStatus] = useState(device.status);
+  const { userProfile } = useAuth();
+  const queryClient = useQueryClient();
+  const room = useRoomData(device.room_id);
+  const { mutate: switchDevice } = useSwitchDeviceMutation();
+
+  const handleOnChange = (value: boolean) => {
+    // setStatus(value);
+    switchDevice(
+      {
+        houseId: room?.house_id,
+        userId: userProfile?.id,
+        userName: userProfile?.given_name,
+        deviceId: device.device_id,
+        statusFrom: device.status,
+        statusTo: value,
+      },
+      {
+        onSuccess: (res) => {
+          if (res.status === "success") {
+            queryClient.setQueryData(
+              [ApiRoutes.UserHouse],
+              (oldData: UserHouseResponse) => {
+                return {
+                  ...oldData,
+                  data: {
+                    ...oldData.data,
+                    rooms: oldData.data.rooms.map((r) =>
+                      r.room_id === device.room_id
+                        ? {
+                            ...r,
+                            devices: r.devices.map((d) =>
+                              d.device_id === device.device_id
+                                ? { ...d, status: value }
+                                : d,
+                            ),
+                          }
+                        : r,
+                    ),
+                  },
+                } as UserHouseResponse;
+              },
+            );
+          } else {
+            ToastAndroid.show(res.message, ToastAndroid.LONG);
+          }
+        },
+        onError: (res) => {
+          ToastAndroid.show(res.message, ToastAndroid.LONG);
+        },
+      },
+    );
+  };
 
   return (
     <TouchableOpacity
@@ -25,8 +81,8 @@ const DeviceCard = ({ device }: { device: Device }) => {
     >
       <Card
         item={device}
-        value={status}
-        onChange={(value) => setStatus(value)}
+        value={device.status}
+        onChange={(value) => handleOnChange(value)}
         render={(device) => (
           <View
             style={{

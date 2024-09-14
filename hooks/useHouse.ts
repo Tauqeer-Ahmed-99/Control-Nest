@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiRoutes } from "@/routes/routes";
 import useApiQuery from "./useApiQuery";
 import { ApiResponse, House } from "../utils/models";
+import useAuth from "./useAuth";
 
 export interface UserHouseSearchParams {
   userId: string;
@@ -16,43 +17,44 @@ const useHouse = (searchParams: UserHouseSearchParams) => {
 };
 
 export const useHouseData = () => {
-  const { data } = useQuery<UserHouseResponse>({
-    queryKey: [ApiRoutes.UserHouse],
-  });
+  const { userProfile } = useAuth();
+  const { data } = useHouse({ userId: userProfile?.id as string });
 
   return data?.data;
 };
 
 export const useRoomData = (roomId: string) => {
-  const { data } = useQuery<UserHouseResponse>({
-    queryKey: [ApiRoutes.UserHouse],
-  });
+  const { userProfile } = useAuth();
+  const { data } = useHouse({ userId: userProfile?.id as string });
 
   return data?.data?.rooms.find((room) => room.room_id === roomId);
 };
 
 export const useRoomsData = () => {
-  const { data } = useQuery<UserHouseResponse>({
-    queryKey: [ApiRoutes.UserHouse],
-  });
+  const { userProfile } = useAuth();
+  const { data } = useHouse({ userId: userProfile?.id as string });
 
   return data?.data.rooms;
 };
 
-export const useDeviceData = (roomId: string, deviceId: string) => {
-  const { data } = useQuery<UserHouseResponse>({
-    queryKey: [ApiRoutes.UserHouse],
-  });
+export const useDeviceData = (roomId: string, deviceId: string | "default") => {
+  const { userProfile } = useAuth();
+  const { data } = useHouse({ userId: userProfile?.id as string });
 
-  return data?.data?.rooms
-    ?.find((room) => room.room_id === roomId)
-    ?.devices.find((device) => device.device_id === deviceId);
+  const devices = data?.data?.rooms?.find(
+    (room) => room.room_id === roomId,
+  )?.devices;
+
+  if (deviceId === "default") {
+    return devices?.find((device) => device.is_default) ?? devices?.[0];
+  }
+
+  return devices?.find((device) => device.device_id === deviceId);
 };
 
 export const useDevicesData = () => {
-  const { data } = useQuery<UserHouseResponse>({
-    queryKey: [ApiRoutes.UserHouse],
-  });
+  const { userProfile } = useAuth();
+  const { data } = useHouse({ userId: userProfile?.id as string });
 
   return data?.data.rooms.flatMap((room) => room.devices);
 };

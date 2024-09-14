@@ -1,29 +1,32 @@
+import BottomNavigation from "@/components/BottomNavigation";
+import InputField from "@/components/InputField";
+import Select from "@/components/Select";
+import Switch from "@/components/Switch";
+import Tile from "@/components/Tile";
+import useAuth from "@/hooks/useAuth";
+import useAvailableGPIOPins from "@/hooks/useAvailableGPIOPins";
+import useDeviceMutation from "@/hooks/useDeviceMutation";
+import {
+  useDeviceData,
+  UserHouseResponse,
+  useRoomData,
+} from "@/hooks/useHouse";
+import useRemoveDeviceMutation from "@/hooks/useRemoveDeviceMutation";
+import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
+import { ApiRoutes } from "@/routes/routes";
+import { Device as DeviceType, HeaderPinConfig } from "@/utils/models";
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
-  NativeSyntheticEvent,
-  TextInputChangeEventData,
   ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
-import InputField from "@/components/InputField";
-import Switch from "@/components/Switch";
-import Tile from "@/components/Tile";
-import { useDeviceData, useRoomData } from "@/hooks/useHouse";
-import { Device as DeviceType, HeaderPinConfig } from "@/utils/models";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
-import { router, useLocalSearchParams } from "expo-router";
-import Select from "@/components/Select";
-import useAvailableGPIOPins from "@/hooks/useAvailableGPIOPins";
-import useAuth from "@/hooks/useAuth";
-import useDeviceMutation from "@/hooks/useDeviceMutation";
-import { useQueryClient } from "@tanstack/react-query";
-import { ApiRoutes, getTypedRoute } from "@/routes/routes";
-import useRemoveDeviceMutation from "@/hooks/useRemoveDeviceMutation";
-import BottomNavigation from "@/components/BottomNavigation";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -46,25 +49,70 @@ const Device = () => {
   const room = useRoomData(roomId as string);
   const deviceData = useDeviceData(roomId as string, deviceId as string);
   const [device, setDevice] = useState(deviceData);
+  const [status, setStatus] = useState(device?.status ?? false);
   const [scheduledDays, setScheduledDays] = useState(
     getScheduledDays(device?.days_scheduled ?? ""),
   );
-
   const deviceNameRef = useRef(device?.device_name ?? "");
-
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [isError, setIsError] = useState(false);
-
   const queryClient = useQueryClient();
-
   const { mutate: mutateDevice, isPending: isConfigureDeviceLoading } =
     useDeviceMutation();
-
   const { mutate: removeDevice, isPending: isRemovingDevice } =
     useRemoveDeviceMutation();
   const { userProfile } = useAuth();
   const { data: availableGPIOPins, isLoading: isLoadingAvailableGPIOPins } =
     useAvailableGPIOPins({ userId: userProfile?.id as string });
+  const { mutate: switchDevice } = useSwitchDeviceMutation();
+
+  const handleOnChange = (value: boolean) => {
+    setStatus(value);
+    switchDevice(
+      {
+        houseId: room?.house_id,
+        userId: userProfile?.id,
+        userName: userProfile?.given_name,
+        deviceId: device?.device_id,
+        statusFrom: device?.status,
+        statusTo: value,
+      },
+      {
+        onSuccess: (res) => {
+          if (res.status === "success") {
+            queryClient.setQueryData(
+              [ApiRoutes.UserHouse],
+              (oldData: UserHouseResponse) => {
+                return {
+                  ...oldData,
+                  data: {
+                    ...oldData.data,
+                    rooms: oldData.data.rooms.map((r) =>
+                      r.room_id === device?.room_id
+                        ? {
+                            ...r,
+                            devices: r.devices.map((d) =>
+                              d.device_id === device?.device_id
+                                ? { ...d, status: value }
+                                : d,
+                            ),
+                          }
+                        : r,
+                    ),
+                  },
+                } as UserHouseResponse;
+              },
+            );
+          } else {
+            ToastAndroid.show(res.message, ToastAndroid.LONG);
+          }
+        },
+        onError: (res) => {
+          ToastAndroid.show(res.message, ToastAndroid.LONG);
+        },
+      },
+    );
+  };
 
   const selectedPinConfig = useMemo(
     () =>
@@ -274,15 +322,7 @@ const Device = () => {
                   borderRadius: 20,
                 }}
               >
-                <Switch
-                  value={device?.status ?? false}
-                  onChange={(value) =>
-                    setDevice((device) => ({
-                      ...(device as DeviceType),
-                      status: value,
-                    }))
-                  }
-                />
+                <Switch value={status} onChange={handleOnChange} />
               </View>
             </View>
           </Tile>

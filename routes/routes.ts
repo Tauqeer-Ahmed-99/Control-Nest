@@ -19,6 +19,7 @@ export enum ApiRoutes {
   RemoveHouse = "/remove-house",
   HouseMember = "/get-house-member",
   UserHouse = "/get-house",
+  SwitchDevice = "/switch-device",
   ConfigureDevice = "/configure-device",
   UpdateHouse = "/update-house",
   AddRoom = "/add-room",

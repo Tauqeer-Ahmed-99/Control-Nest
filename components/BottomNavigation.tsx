@@ -91,11 +91,11 @@ const BottomNavigation = () => {
                         setIsAddRoomFormOpen(true);
                       } else if (
                         pathname === "/devices" ||
-                        pathname.startsWith("/room/")
+                        pathname.startsWith("/room/") ||
+                        pathname === "/notifications"
                       ) {
                         setIsAddDeviceFormOpen(true);
                       }
-                      console.log(pathname);
                     }
                   : undefined
               }
@@ -116,7 +116,11 @@ const BottomNavigation = () => {
           ) : (
             <TouchableOpacity
               key={navItem.label}
-              onPress={() => router.replace(getTypedRoute(navItem.path))}
+              onPress={() =>
+                navItem.path === "/settings"
+                  ? router.push(getTypedRoute(navItem.path))
+                  : router.replace(getTypedRoute(navItem.path))
+              }
             >
               <View
                 style={{

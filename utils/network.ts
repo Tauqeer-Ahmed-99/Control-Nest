@@ -34,7 +34,7 @@ export const ExpectedHTTPStatuses: HTTPStatus[] = [
 ];
 
 const request = (url: string, config: ApiConfig) => {
-  const fullUrl = new URL(url, "http://rpi.local:8000");
+  const fullUrl = new URL(url, "https://rpi4.nmt-solutions.in/");
 
   const { searchParams, body, method = HTTPMethod.GET, headers } = config;
 

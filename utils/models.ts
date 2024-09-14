@@ -21,6 +21,7 @@ export interface Device {
   status: boolean;
   room_id: string;
   is_scheduled: boolean;
+  is_default: boolean;
   days_scheduled: string;
   start_time: string;
   off_time: string;

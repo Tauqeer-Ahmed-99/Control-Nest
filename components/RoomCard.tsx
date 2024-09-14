@@ -1,14 +1,70 @@
-import { getTypedRoute, Routes } from "@/routes/routes";
-import { Room } from "@/utils/models";
+import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
+import { Device, Room } from "@/utils/models";
 import { Text } from "@rneui/themed";
 import { router } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
-import { useState } from "react";
+import { useDeviceData, UserHouseResponse } from "@/hooks/useHouse";
+import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
+import { useQueryClient } from "@tanstack/react-query";
+import useAuth from "@/hooks/useAuth";
 
 const RoomCard = ({ room }: { room: Room }) => {
-  const [status, setStatus] = useState(false);
+  const { userProfile } = useAuth();
+  const queryClient = useQueryClient();
+  const defaultDevice = useDeviceData(room.room_id, "default");
+  const { mutate: switchDevice } = useSwitchDeviceMutation();
+
+  const handleOnChange = (value: boolean) => {
+    if (defaultDevice) {
+      switchDevice(
+        {
+          houseId: room?.house_id,
+          userId: userProfile?.id,
+          userName: userProfile?.given_name,
+          deviceId: defaultDevice.device_id,
+          statusFrom: defaultDevice.status,
+          statusTo: value,
+        },
+        {
+          onSuccess: (res) => {
+            if (res.status === "success") {
+              queryClient.setQueryData(
+                [ApiRoutes.UserHouse],
+                (oldData: UserHouseResponse) => {
+                  return {
+                    ...oldData,
+                    data: {
+                      ...oldData.data,
+                      rooms: oldData.data.rooms.map((r) =>
+                        r.room_id === defaultDevice.room_id
+                          ? {
+                              ...r,
+                              devices: r.devices.map((d) =>
+                                d.device_id === defaultDevice.device_id
+                                  ? { ...d, status: value }
+                                  : d,
+                              ),
+                            }
+                          : r,
+                      ),
+                    },
+                  } as UserHouseResponse;
+                },
+              );
+            } else {
+              ToastAndroid.show(res.message, ToastAndroid.LONG);
+            }
+          },
+          onError: (res) => {
+            ToastAndroid.show(res.message, ToastAndroid.LONG);
+          },
+        },
+      );
+    }
+  };
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -19,8 +75,8 @@ const RoomCard = ({ room }: { room: Room }) => {
     >
       <Card
         item={room}
-        value={status}
-        onChange={(value) => setStatus(value)}
+        value={defaultDevice?.status ?? false}
+        onChange={defaultDevice ? handleOnChange : () => {}}
         render={(room) => (
           <View
             style={{

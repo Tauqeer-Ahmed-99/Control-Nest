@@ -92,9 +92,7 @@ const Room = () => {
         {room.devices.length > 0 ? (
           <Grid
             items={room.devices}
-            renderItem={(device) => (
-              <DeviceCard key={device.device_id} device={device} />
-            )}
+            renderItem={(device) => <DeviceCard device={device} />}
             rowGap={30}
           />
         ) : (

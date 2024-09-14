@@ -1,9 +1,14 @@
 import request, { ApiConfig, HTTPMethod } from "@/utils/network";
-import { UseMutationResult, useMutation } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  UseMutationResult,
+  useMutation,
+} from "@tanstack/react-query";
 
 const useApiMutation = <T>(
   url: string,
   config?: ApiConfig,
+  options?: UseMutationOptions<T, Error, unknown, unknown>,
 ): UseMutationResult<T, Error> => {
   return useMutation({
     mutationKey: [url],
@@ -23,6 +28,7 @@ const useApiMutation = <T>(
 
       return response.json();
     },
+    ...options,
   });
 };
 

@@ -79,8 +79,6 @@ const Summary = () => {
   const { data: weather, isLoading: isWeatherLoading } = useWeather();
   const icon = useWeatherIcons(weather?.current.condition.text ?? "");
 
-  console.log(weather);
-
   summaryItems[0].icon = icon;
   summaryItems[0].primaryText = `${weather?.current?.temp_c ?? ""}°C`;
   summaryItems[0].secondaryText = isWeatherLoading

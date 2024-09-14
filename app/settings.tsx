@@ -14,7 +14,7 @@ const Settings = () => {
       }}
     >
       <Text>Settings</Text>
-      <BottomNavigation />
+      {/* <BottomNavigation /> */}
     </View>
   );
 };

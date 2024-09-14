@@ -6,7 +6,6 @@ const useIPAddress = () => {
 
   const getIPAddres = async () => {
     const ip = await Network.getIpAddressAsync();
-    console.log(ip);
     setIPAddress(ip);
   };
 

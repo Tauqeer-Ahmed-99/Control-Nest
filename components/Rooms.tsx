@@ -44,7 +44,7 @@ const Rooms = () => {
       />
       <Grid
         items={rooms}
-        renderItem={(room) => <RoomCard key={room.room_id} room={room} />}
+        renderItem={(room) => <RoomCard room={room} />}
         rowGap={30}
       />
     </View>

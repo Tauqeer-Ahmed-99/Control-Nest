@@ -18,7 +18,7 @@ interface GridProps<T> {
 }
 
 function Grid<T>({ items, renderItem, rowSize, rowGap }: GridProps<T>) {
-  const data = useMemo(() => chunkArray(items, rowSize ?? 2), [items.length]);
+  const data = chunkArray(items, rowSize ?? 2);
 
   return (
     <View>
@@ -32,7 +32,11 @@ function Grid<T>({ items, renderItem, rowSize, rowGap }: GridProps<T>) {
             alignItems: "center",
           }}
         >
-          {chunk.map(renderItem)}
+          {chunk.map((item, index, arr) => (
+            <React.Fragment key={index}>
+              {renderItem(item, index, arr)}
+            </React.Fragment>
+          ))}
         </View>
       ))}
     </View>
