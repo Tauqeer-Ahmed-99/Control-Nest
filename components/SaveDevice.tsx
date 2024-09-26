@@ -10,8 +10,6 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useCallback } from "react";
 import { ActivityIndicator, ToastAndroid, View } from "react-native";
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
 const SaveDevice = ({
   device,
   deviceNameRef,
@@ -57,8 +55,9 @@ const SaveDevice = ({
         deviceName: deviceNameRef.current,
         pinNumber: device?.pin_number,
         status: device?.status,
+        isDefault: device?.is_default,
         isScheduled: device?.is_scheduled,
-        daysScheduled: device?.days_scheduled,
+        daysScheduled: device?.days_scheduled ?? "",
         startTime: device?.start_time ?? "",
         offTime: device?.off_time ?? "",
       },

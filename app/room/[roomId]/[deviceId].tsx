@@ -1,4 +1,5 @@
 import BottomNavigation from "@/components/BottomNavigation";
+import DefaultDeviceInfo from "@/components/DefaultDeviceInfo";
 import DeviceInputFieldsInfo from "@/components/DeviceInputFieldInfo";
 import DeviceScheduleInfo from "@/components/DeviceScheduleInfo";
 import DeviceStatusInfo from "@/components/DeviceStatusInfo";
@@ -41,6 +42,7 @@ const Device = () => {
             deviceNameRef={deviceNameRef}
           />
           <DeviceStatusInfo device={device} setDevice={setDevice} />
+          <DefaultDeviceInfo device={device} setDevice={setDevice} />
           <DeviceScheduleInfo
             device={device}
             setDevice={setDevice}
