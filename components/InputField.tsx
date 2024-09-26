@@ -1,6 +1,6 @@
-import React, { RefObject } from "react";
-import { StyleSheet } from "react-native";
 import { Input, useTheme } from "@rneui/themed";
+import React from "react";
+import { StyleSheet } from "react-native";
 
 const InputField = ({
   label,

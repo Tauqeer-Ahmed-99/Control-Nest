@@ -3,7 +3,7 @@ import Tile from "@/components/Tile";
 import { Device as DeviceType } from "@/utils/models";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { Button, Text, useTheme } from "@rneui/themed";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

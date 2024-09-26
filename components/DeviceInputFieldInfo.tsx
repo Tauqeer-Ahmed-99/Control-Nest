@@ -45,7 +45,6 @@ const DeviceInputFieldsInfo = ({
 
   const handleDeviceNameChange = useCallback(
     (text: string) => {
-      // setDevice((device) => ({ ...device, device_name: text } as DeviceType));
       deviceNameRef.current = text;
     },
     [device],
@@ -68,10 +67,6 @@ const DeviceInputFieldsInfo = ({
         defaultValue={deviceNameRef.current}
         onChangeText={handleDeviceNameChange}
       />
-      {/* <InputField
-      label="GPIO Pin"
-      value={device?.pin_number.toString()}
-    /> */}
       <Select
         label="GPIO Pin"
         isLoading={isLoadingAvailableGPIOPins}

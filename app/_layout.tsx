@@ -9,7 +9,6 @@ import "react-native-reanimated";
 import AuthContextProvider from "@/context/AuthContext";
 import routes, { Routes } from "@/routes/routes";
 import { ThemeProvider, createTheme } from "@rneui/themed";
-import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

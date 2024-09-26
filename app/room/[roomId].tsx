@@ -15,13 +15,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ApiRoutes } from "@/routes/routes";
 import useAuth from "@/hooks/useAuth";
 
-// {
-//   "userId": "string",
-//   "userName": "string",
-//   "houseId": "string",
-//   "roomId": "string"
-// }
-
 const Room = () => {
   const {
     theme: {

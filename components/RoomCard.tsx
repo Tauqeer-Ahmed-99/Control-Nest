@@ -1,14 +1,14 @@
+import useAuth from "@/hooks/useAuth";
+import { useDeviceData, UserHouseResponse } from "@/hooks/useHouse";
+import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
 import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
-import { Device, Room } from "@/utils/models";
+import { Room } from "@/utils/models";
 import { Text } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
-import { useDeviceData, UserHouseResponse } from "@/hooks/useHouse";
-import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
-import { useQueryClient } from "@tanstack/react-query";
-import useAuth from "@/hooks/useAuth";
 
 const RoomCard = ({ room }: { room: Room }) => {
   const { userProfile } = useAuth();

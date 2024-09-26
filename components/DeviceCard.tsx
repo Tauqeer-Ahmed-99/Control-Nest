@@ -1,25 +1,22 @@
+import useAuth from "@/hooks/useAuth";
+import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
 import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
 import { Device } from "@/utils/models";
 import { Text } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
-import useAuth from "@/hooks/useAuth";
-import { useQueryClient } from "@tanstack/react-query";
-import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
-import { useState } from "react";
 
 const DeviceCard = ({ device }: { device: Device }) => {
-  // const [status, setStatus] = useState(device.status);
   const { userProfile } = useAuth();
   const queryClient = useQueryClient();
   const room = useRoomData(device.room_id);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
 
   const handleOnChange = (value: boolean) => {
-    // setStatus(value);
     switchDevice(
       {
         houseId: room?.house_id,

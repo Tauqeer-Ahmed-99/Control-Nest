@@ -72,7 +72,6 @@ const BottomNavigation = () => {
           height: 70,
           width: bottomNavIslandWidth,
           backgroundColor: secondary,
-          // opacity: 0.8,
           elevation: 5,
           borderRadius: 35,
           flexDirection: "row",

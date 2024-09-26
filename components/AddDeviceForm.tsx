@@ -13,15 +13,6 @@ import { ToastAndroid } from "react-native";
 import { ApiRoutes } from "@/routes/routes";
 import { useLocalSearchParams } from "expo-router";
 
-// {
-//   "houseId": "string",
-//   "userId": "string",
-//   "userName": "string",
-//   "roomId": "string",
-//   "pinNumber": 0,
-//   "deviceName": "string"
-// }
-
 const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   const {
     theme: {
