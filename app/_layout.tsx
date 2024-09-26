@@ -38,23 +38,6 @@ export default function RootLayout() {
     return null;
   }
 
-  // const getHeaderLeft = (route: Route) => {
-  // switch (route.path) {
-  //   case Routes.Dashboard:
-  //     return () => <NMTLogo height={30} width={30} style={{ margin: 12 }} />;
-  //   default:
-  //     return undefined;
-  // }
-  // };
-  // const getHeaderRight = (route: Route) => {
-  // switch (route.path) {
-  //   case Routes.Dashboard:
-  //     return () => <MenuList />;
-  //   default:
-  //     return undefined;
-  // }
-  // };
-
   const getHeaderBackgroundColor = (route: Routes) => {
     switch (route) {
       case Routes.Home:

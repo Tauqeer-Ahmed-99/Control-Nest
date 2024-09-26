@@ -1,12 +1,12 @@
-import Container from "@/components/Container";
+import { View } from "react-native";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 
 export default function Home() {
   return (
-    <Container>
+    <View>
       {[...new Array(6)].map((_, idx) => (
         <LoadingSkeleton key={idx} borderRadius={12} />
       ))}
-    </Container>
+    </View>
   );
 }
