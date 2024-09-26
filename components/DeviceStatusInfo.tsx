@@ -1,0 +1,103 @@
+import Switch from "@/components/Switch";
+import Tile from "@/components/Tile";
+import useAuth from "@/hooks/useAuth";
+import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
+import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
+import { ApiRoutes } from "@/routes/routes";
+import { Device as DeviceType } from "@/utils/models";
+import { Text, useTheme } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
+import { useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import { ToastAndroid, View } from "react-native";
+
+const DeviceStatusInfo = ({ device }: { device?: DeviceType }) => {
+  const {
+    theme: {
+      colors: { primary },
+    },
+  } = useTheme();
+  const { roomId } = useLocalSearchParams();
+  const { userProfile } = useAuth();
+  const room = useRoomData(roomId as string);
+  const [status, setStatus] = useState(device?.status ?? false);
+  const { mutate: switchDevice } = useSwitchDeviceMutation();
+
+  const queryClient = useQueryClient();
+
+  const handleOnChange = (value: boolean) => {
+    setStatus(value);
+    switchDevice(
+      {
+        houseId: room?.house_id,
+        userId: userProfile?.id,
+        userName: userProfile?.given_name,
+        deviceId: device?.device_id,
+        statusFrom: device?.status,
+        statusTo: value,
+      },
+      {
+        onSuccess: (res) => {
+          if (res.status === "success") {
+            queryClient.setQueryData(
+              [ApiRoutes.UserHouse],
+              (oldData: UserHouseResponse) => {
+                return {
+                  ...oldData,
+                  data: {
+                    ...oldData.data,
+                    rooms: oldData.data.rooms.map((r) =>
+                      r.room_id === device?.room_id
+                        ? {
+                            ...r,
+                            devices: r.devices.map((d) =>
+                              d.device_id === device?.device_id
+                                ? { ...d, status: value }
+                                : d,
+                            ),
+                          }
+                        : r,
+                    ),
+                  },
+                } as UserHouseResponse;
+              },
+            );
+          } else {
+            ToastAndroid.show(res.message, ToastAndroid.LONG);
+          }
+        },
+        onError: (res) => {
+          ToastAndroid.show(res.message, ToastAndroid.LONG);
+        },
+      },
+    );
+  };
+
+  return (
+    <Tile>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Text style={{ fontSize: 16 }}>Status</Text>
+        <View
+          style={{
+            height: 45,
+            width: 80,
+            backgroundColor: primary,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Switch value={status} onChange={handleOnChange} />
+        </View>
+      </View>
+    </Tile>
+  );
+};
+
+export default DeviceStatusInfo;
