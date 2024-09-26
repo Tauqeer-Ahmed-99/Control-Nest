@@ -8,10 +8,16 @@ import { Device as DeviceType } from "@/utils/models";
 import { Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import { ToastAndroid, View } from "react-native";
 
-const DeviceStatusInfo = ({ device }: { device?: DeviceType }) => {
+const DeviceStatusInfo = ({
+  device,
+  setDevice,
+}: {
+  device?: DeviceType;
+  setDevice: React.Dispatch<React.SetStateAction<DeviceType | undefined>>;
+}) => {
   const {
     theme: {
       colors: { primary },
@@ -20,58 +26,63 @@ const DeviceStatusInfo = ({ device }: { device?: DeviceType }) => {
   const { roomId } = useLocalSearchParams();
   const { userProfile } = useAuth();
   const room = useRoomData(roomId as string);
-  const [status, setStatus] = useState(device?.status ?? false);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
 
   const queryClient = useQueryClient();
 
-  const handleOnChange = (value: boolean) => {
-    setStatus(value);
-    switchDevice(
-      {
-        houseId: room?.house_id,
-        userId: userProfile?.id,
-        userName: userProfile?.given_name,
-        deviceId: device?.device_id,
-        statusFrom: device?.status,
-        statusTo: value,
-      },
-      {
-        onSuccess: (res) => {
-          if (res.status === "success") {
-            queryClient.setQueryData(
-              [ApiRoutes.UserHouse],
-              (oldData: UserHouseResponse) => {
-                return {
-                  ...oldData,
-                  data: {
-                    ...oldData.data,
-                    rooms: oldData.data.rooms.map((r) =>
-                      r.room_id === device?.room_id
-                        ? {
-                            ...r,
-                            devices: r.devices.map((d) =>
-                              d.device_id === device?.device_id
-                                ? { ...d, status: value }
-                                : d,
-                            ),
-                          }
-                        : r,
-                    ),
-                  },
-                } as UserHouseResponse;
-              },
-            );
-          } else {
+  const handleOnChange = useCallback(
+    (value: boolean) => {
+      setDevice((device) => ({
+        ...(device as DeviceType),
+        status: value,
+      }));
+      switchDevice(
+        {
+          houseId: room?.house_id,
+          userId: userProfile?.id,
+          userName: userProfile?.given_name,
+          deviceId: device?.device_id,
+          statusFrom: device?.status,
+          statusTo: value,
+        },
+        {
+          onSuccess: (res) => {
+            if (res.status === "success") {
+              queryClient.setQueryData(
+                [ApiRoutes.UserHouse],
+                (oldData: UserHouseResponse) => {
+                  return {
+                    ...oldData,
+                    data: {
+                      ...oldData.data,
+                      rooms: oldData.data.rooms.map((r) =>
+                        r.room_id === device?.room_id
+                          ? {
+                              ...r,
+                              devices: r.devices.map((d) =>
+                                d.device_id === device?.device_id
+                                  ? { ...d, status: value }
+                                  : d,
+                              ),
+                            }
+                          : r,
+                      ),
+                    },
+                  } as UserHouseResponse;
+                },
+              );
+            } else {
+              ToastAndroid.show(res.message, ToastAndroid.LONG);
+            }
+          },
+          onError: (res) => {
             ToastAndroid.show(res.message, ToastAndroid.LONG);
-          }
+          },
         },
-        onError: (res) => {
-          ToastAndroid.show(res.message, ToastAndroid.LONG);
-        },
-      },
-    );
-  };
+      );
+    },
+    [room?.house_id, userProfile?.id, userProfile?.given_name, device?.status],
+  );
 
   return (
     <Tile>
@@ -93,7 +104,7 @@ const DeviceStatusInfo = ({ device }: { device?: DeviceType }) => {
             borderRadius: 20,
           }}
         >
-          <Switch value={status} onChange={handleOnChange} />
+          <Switch value={device?.status ?? false} onChange={handleOnChange} />
         </View>
       </View>
     </Tile>

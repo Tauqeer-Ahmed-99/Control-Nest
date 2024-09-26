@@ -40,7 +40,7 @@ const Device = () => {
             setDevice={setDevice}
             deviceNameRef={deviceNameRef}
           />
-          <DeviceStatusInfo device={device} />
+          <DeviceStatusInfo device={device} setDevice={setDevice} />
           <DeviceScheduleInfo
             device={device}
             setDevice={setDevice}
