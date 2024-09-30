@@ -1,16 +1,16 @@
 {
   "expo": {
-    "name": "nmt-has-mobile",
+    "name": "Home Auomation App",
     "slug": "nmt-has-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/nmt-logo.png",
     "scheme": "nmt-has-mobile",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/splash-screen.png",
+      "resizeMode": "",
+      "backgroundColor": "#232228"
     },
     "ios": {
       "supportsTablet": true
