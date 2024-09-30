@@ -1,6 +1,7 @@
 import { Text, useTheme } from "@rneui/themed";
 import React from "react";
 import { View } from "react-native";
+import MessageContainer from "./MessageContainer";
 
 function chunkArray<T>(array: T[], chunkSize: number) {
   const chunkedArray = [];
@@ -54,9 +55,7 @@ function Grid<T>({
           </View>
         ))
       ) : (
-        <Text style={{ textAlign: "center", color: grey3 }}>
-          {noDataMessage ?? "Data not available."}
-        </Text>
+        <MessageContainer message={noDataMessage ?? "Data not available."} />
       )}
     </View>
   );

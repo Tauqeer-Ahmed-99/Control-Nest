@@ -12,6 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { ToastAndroid } from "react-native";
 import { ApiRoutes } from "@/routes/routes";
 import { useLocalSearchParams } from "expo-router";
+import MessageContainer from "./MessageContainer";
 
 const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   const {
@@ -76,9 +77,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   if (!rooms || !availableGPIOPins?.data) {
     return (
       <View>
-        <Text style={{ textAlign: "center", fontSize: 18 }}>
-          Something went wrong, please try again later.
-        </Text>
+        <MessageContainer message="Something went wrong, please try again later." />
       </View>
     );
   }

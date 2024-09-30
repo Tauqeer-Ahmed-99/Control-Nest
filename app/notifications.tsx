@@ -1,4 +1,5 @@
 import BottomNavigation from "@/components/BottomNavigation";
+import MessageContainer from "@/components/MessageContainer";
 import { useSocketNotifications } from "@/context/SocketContext";
 import { SocketEvent } from "@/utils/models";
 import { Text, useTheme } from "@rneui/themed";
@@ -72,9 +73,7 @@ const Notifications = () => {
               </View>
             ))
           ) : (
-            <Text style={{ textAlign: "center", color: theme.colors.grey3 }}>
-              No new notification.
-            </Text>
+            <MessageContainer message="No new notification." />
           )}
         </View>
       </ScrollView>

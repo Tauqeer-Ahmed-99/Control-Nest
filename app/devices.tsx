@@ -1,6 +1,7 @@
 import BottomNavigation from "@/components/BottomNavigation";
 import DeviceCard from "@/components/DeviceCard";
 import Header from "@/components/Header";
+import MessageContainer from "@/components/MessageContainer";
 import { useRoomsData } from "@/hooks/useHouse";
 import { getTypedRoute, Routes } from "@/routes/routes";
 import { Text, useTheme } from "@rneui/themed";
@@ -47,16 +48,14 @@ const Devices = () => {
                     </View>
                   </ScrollView>
                 ) : (
-                  <Text style={{ color: theme.colors.grey1 }}>
-                    No device added to this room.
-                  </Text>
+                  <MessageContainer message="No device added to this room." />
                 )}
               </View>
             </View>
           ))
         ) : (
           <View>
-            <Text style={{ textAlign: "center" }}>No device available.</Text>
+            <MessageContainer message="No rooms available." />
           </View>
         )}
       </ScrollView>

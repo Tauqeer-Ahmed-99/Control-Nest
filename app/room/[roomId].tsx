@@ -14,6 +14,7 @@ import useRemoveRoomMutation from "@/hooks/useRemoveRoomMutation";
 import { useQueryClient } from "@tanstack/react-query";
 import { ApiRoutes } from "@/routes/routes";
 import useAuth from "@/hooks/useAuth";
+import MessageContainer from "@/components/MessageContainer";
 
 const Room = () => {
   const {
@@ -67,7 +68,7 @@ const Room = () => {
   if (!room) {
     return (
       <View>
-        <Text>Room with id '{roomId}' not found.</Text>
+        <MessageContainer message="Room with id '{roomId}' not found." />
       </View>
     );
   }
@@ -90,9 +91,7 @@ const Room = () => {
             rowGap={30}
           />
         ) : (
-          <Text style={{ textAlign: "center", color: "grey" }}>
-            No device added to this room.
-          </Text>
+          <MessageContainer message="No Device available create a new device." />
         )}
       </ScrollView>
       <BottomNavigation />

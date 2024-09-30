@@ -6,6 +6,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import { getTypedRoute, Routes } from "@/routes/routes";
+import MessageContainer from "@/components/MessageContainer";
 
 const Rooms = () => {
   const { theme } = useTheme();
@@ -55,9 +56,7 @@ const Rooms = () => {
               </TouchableOpacity>
             ))
           ) : (
-            <Text style={{ textAlign: "center", color: theme.colors.grey3 }}>
-              Rooms are not available create a new room.
-            </Text>
+            <MessageContainer message="Rooms not available create a new room." />
           )}
         </View>
       </ScrollView>

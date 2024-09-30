@@ -1,6 +1,7 @@
 import { Text } from "@rneui/themed";
 import React from "react";
 import { View } from "react-native";
+import MessageContainer from "./MessageContainer";
 
 const NoDataAvailable = (props: { title: string; description?: string }) => {
   return (
@@ -10,10 +11,11 @@ const NoDataAvailable = (props: { title: string; description?: string }) => {
         alignItems: "center",
       }}
     >
-      <Text style={{ fontSize: 18, fontWeight: "800" }}>{props.title}</Text>
-      {props.description && (
-        <Text style={{ textAlign: "center" }}>{props.description}</Text>
-      )}
+      <MessageContainer message={props.title}>
+        {props.description && (
+          <Text style={{ textAlign: "center" }}>{props.description}</Text>
+        )}
+      </MessageContainer>
     </View>
   );
 };

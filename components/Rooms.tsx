@@ -9,6 +9,7 @@ import RoomCard from "./RoomCard";
 import { router } from "expo-router";
 import { getTypedRoute, Routes } from "@/routes/routes";
 import LoadingSkeleton from "./LoadingSkeleton";
+import MessageContainer from "./MessageContainer";
 
 const GAP = 30;
 const PADDING_HORIZONTAL = 12 * 2;
@@ -56,9 +57,7 @@ const Rooms = () => {
   if (!roomData) {
     return (
       <View style={{ marginVertical: 16 }}>
-        <Text style={{ textAlign: "center", color: grey3 }}>
-          Something went wrong, please try again later.
-        </Text>
+        <MessageContainer message="Something went wrong, please try again later." />
       </View>
     );
   }
@@ -77,7 +76,7 @@ const Rooms = () => {
         items={rooms}
         renderItem={(room) => <RoomCard room={room} />}
         rowGap={30}
-        noDataMessage="Rooms not available create a new room"
+        noDataMessage="Rooms not available create a new room."
       />
     </View>
   );
