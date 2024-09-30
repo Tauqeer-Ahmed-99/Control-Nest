@@ -9,14 +9,13 @@
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash-screen.png",
-      "resizeMode": "",
+      "resizeMode": "contain",
       "backgroundColor": "#232228"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -57,6 +56,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1fff22ac-8235-4738-975d-882af1dde83b"
+      }
     }
   }
 }
