@@ -31,10 +31,11 @@ const Rooms = () => {
     return (
       <View style={{ marginVertical: 16 }}>
         <Grid
-          items={["Loading 1", "Loading 2"]}
+          items={["Loading 1", "Loading 2", "Loading 3", "Loading 4"]}
           renderItem={() => (
-            <LoadingSkeleton height={120} width={cardWidth} borderRadius={12} />
+            <LoadingSkeleton height={150} width={cardWidth} borderRadius={12} />
           )}
+          rowGap={20}
         />
       </View>
     );
