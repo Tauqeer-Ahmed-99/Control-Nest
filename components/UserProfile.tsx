@@ -47,14 +47,18 @@ const UserProfile = () => {
         >
           <Image
             source={{
-              uri: "https://cdn.discordapp.com/attachments/294742173889331200/931174004641910824/me.jpg?ex=66d316df&is=66d1c55f&hm=7c35579b49b6d50b4115fcf258340279b4cc55b8413ffeef00d46582f8761762&",
+              uri: userProfile?.picture,
             }}
             style={{ height: "100%", width: "100%", borderRadius: 35 }}
           />
         </BorderContainer>
         <View>
-          <Text>Hello {userProfile?.given_name} 👋</Text>
-          <Text style={{ color: "grey" }}>Welcome to your home.</Text>
+          <Text style={{ textAlign: "center" }}>
+            Hello {userProfile?.given_name} 👋
+          </Text>
+          <Text style={{ color: "grey", textAlign: "center" }}>
+            Welcome to your home.
+          </Text>
         </View>
       </View>
     </View>

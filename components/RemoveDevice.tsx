@@ -35,6 +35,9 @@ const RemoveDevice = () => {
         houseId: room?.house_id,
         roomId,
         deviceId,
+        deviceName: room?.devices?.find(
+          (device) => device.device_id === deviceId,
+        )?.device_name,
       },
       {
         onSuccess: (res) => {

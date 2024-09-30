@@ -92,6 +92,16 @@ export interface HeaderPinConfig {
   voltage?: Voltage;
 }
 
+export enum SocketEvent {
+  ADD_ROOM = "ADD_ROOM",
+  REMOVE_ROOM = "REMOVE_ROOM",
+  ADD_DEVICE = "ADD_DEVICE",
+  SWITCH_DEVICE = "SWITCH_DEVICE",
+  CONFIGURE_DEVICE = "CONFIGURE_DEVICE",
+  REMOVE_DEVICE = "REMOVE_DEVICE",
+  USER_LEFT = "USER_LEFT",
+}
+
 export enum ResponseStatusCodes {
   INVALID_DATA = "INVALID_DATA",
   HOUSE_NOT_INITIALIZED = "HOUSE_NOT_INITIALIZED",
@@ -100,6 +110,7 @@ export enum ResponseStatusCodes {
   USER_LOGGEDIN = "USER_LOGGEDIN",
   INVALID_REQUEST = "INVALID_REQUEST",
   REQUEST_FULLFILLED = "REQUEST_FULLFILLED",
+  SWITCH_DEVICE_ERROR = "SWITCH_DEVICE_ERROR",
 }
 
 export interface ApiResponse<T> {

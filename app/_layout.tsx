@@ -10,6 +10,7 @@ import AuthContextProvider from "@/context/AuthContext";
 import routes, { Routes } from "@/routes/routes";
 import { ThemeProvider, createTheme } from "@rneui/themed";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import SocketProvider from "@/context/SocketContext";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -70,35 +71,37 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        <SafeAreaProvider>
-          <ThemeProvider theme={theme}>
-            <Stack>
-              {routes.map((route) => (
-                <Stack.Screen
-                  key={route.path}
-                  name={route.path}
-                  options={{
-                    headerShown: route.showheader ?? false,
-                    headerTintColor: "#ffffff",
-                    headerTitle: route.label,
-                    headerTitleAlign: "center",
-                    // headerLeft: getHeaderLeft(route),
-                    // headerRight: getHeaderRight(route),
-                    headerShadowVisible: false,
-                    headerTitleStyle: {
-                      color: "#fff",
-                      fontFamily: "Lexend_500Medium",
-                    },
-                    headerStyle: {
-                      backgroundColor: getHeaderBackgroundColor(route.path),
-                    },
-                    statusBarTranslucent: true,
-                  }}
-                />
-              ))}
-            </Stack>
-          </ThemeProvider>
-        </SafeAreaProvider>
+        <SocketProvider>
+          <SafeAreaProvider>
+            <ThemeProvider theme={theme}>
+              <Stack>
+                {routes.map((route) => (
+                  <Stack.Screen
+                    key={route.path}
+                    name={route.path}
+                    options={{
+                      headerShown: route.showheader ?? false,
+                      headerTintColor: "#ffffff",
+                      headerTitle: route.label,
+                      headerTitleAlign: "center",
+                      // headerLeft: getHeaderLeft(route),
+                      // headerRight: getHeaderRight(route),
+                      headerShadowVisible: false,
+                      headerTitleStyle: {
+                        color: "#fff",
+                        fontFamily: "Lexend_500Medium",
+                      },
+                      headerStyle: {
+                        backgroundColor: getHeaderBackgroundColor(route.path),
+                      },
+                      statusBarTranslucent: true,
+                    }}
+                  />
+                ))}
+              </Stack>
+            </ThemeProvider>
+          </SafeAreaProvider>
+        </SocketProvider>
       </AuthContextProvider>
     </QueryClientProvider>
   );

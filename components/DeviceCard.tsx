@@ -2,7 +2,7 @@ import useAuth from "@/hooks/useAuth";
 import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
 import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
-import { Device } from "@/utils/models";
+import { Device, ResponseStatusCodes } from "@/utils/models";
 import { Text } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -23,6 +23,7 @@ const DeviceCard = ({ device }: { device: Device }) => {
         userId: userProfile?.id,
         userName: userProfile?.given_name,
         deviceId: device.device_id,
+        deviceName: device.device_name,
         statusFrom: device.status,
         statusTo: value,
       },
@@ -52,6 +53,14 @@ const DeviceCard = ({ device }: { device: Device }) => {
                 } as UserHouseResponse;
               },
             );
+          } else if (
+            res.status_code === ResponseStatusCodes.SWITCH_DEVICE_ERROR
+          ) {
+            ToastAndroid.show(
+              "Switch Device Error: Try Restarting Controller Device.",
+              ToastAndroid.LONG,
+            );
+            ToastAndroid.show(res.message, ToastAndroid.LONG);
           } else {
             ToastAndroid.show(res.message, ToastAndroid.LONG);
           }

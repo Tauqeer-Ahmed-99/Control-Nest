@@ -9,7 +9,7 @@ import SaveDevice from "@/components/SaveDevice";
 import { useDeviceData } from "@/hooks/useHouse";
 import { useTheme } from "@rneui/themed";
 import { useLocalSearchParams } from "expo-router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 
@@ -24,6 +24,12 @@ const Device = () => {
   const [device, setDevice] = useState(deviceData);
   const deviceNameRef = useRef(device?.device_name ?? "");
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (deviceData) {
+      setDevice(deviceData);
+    }
+  }, [JSON.stringify(deviceData)]);
 
   return (
     <View

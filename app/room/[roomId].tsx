@@ -38,6 +38,7 @@ const Room = () => {
         userName: userProfile?.given_name,
         houseId: room?.house_id,
         roomId: roomId,
+        roomName: room?.room_name,
       },
       {
         onSuccess: (res) => {
