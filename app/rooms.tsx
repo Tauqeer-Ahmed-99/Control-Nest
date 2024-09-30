@@ -27,30 +27,38 @@ const Rooms = () => {
     >
       <ScrollView>
         <View style={{ gap: 16 }}>
-          {rooms.map((room) => (
-            <TouchableOpacity
-              key={room.room_id}
-              onPress={() =>
-                router.push(
-                  getTypedRoute(Routes.Room.replace("[roomId]", room.room_id)),
-                )
-              }
-            >
-              <View
-                style={{
-                  padding: 16,
-                  borderRadius: 12,
-                  backgroundColor: theme.colors.secondary,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
+          {rooms.length > 0 ? (
+            rooms.map((room) => (
+              <TouchableOpacity
+                key={room.room_id}
+                onPress={() =>
+                  router.push(
+                    getTypedRoute(
+                      Routes.Room.replace("[roomId]", room.room_id),
+                    ),
+                  )
+                }
               >
-                <Text>{room.room_name}</Text>
-                <AntDesign name="right" size={24} color="grey" />
-              </View>
-            </TouchableOpacity>
-          ))}
+                <View
+                  style={{
+                    padding: 16,
+                    borderRadius: 12,
+                    backgroundColor: theme.colors.secondary,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text>{room.room_name}</Text>
+                  <AntDesign name="right" size={24} color="grey" />
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={{ textAlign: "center", color: theme.colors.grey3 }}>
+              Rooms are not available create a new room.
+            </Text>
+          )}
         </View>
       </ScrollView>
     </View>

@@ -1,3 +1,4 @@
+import { Text, useTheme } from "@rneui/themed";
 import React from "react";
 import { View } from "react-native";
 
@@ -15,30 +16,48 @@ interface GridProps<T> {
   renderItem: (item: T, index: number, array: T[]) => React.ReactNode;
   rowSize?: number;
   rowGap?: number;
+  noDataMessage?: string;
 }
 
-function Grid<T>({ items, renderItem, rowSize, rowGap }: GridProps<T>) {
+function Grid<T>({
+  items,
+  renderItem,
+  rowSize,
+  rowGap,
+  noDataMessage,
+}: GridProps<T>) {
+  const {
+    theme: {
+      colors: { grey3 },
+    },
+  } = useTheme();
   const data = chunkArray(items, rowSize ?? 2);
 
   return (
     <View>
-      {data.map((chunk, index) => (
-        <View
-          key={index}
-          style={{
-            marginBottom: rowGap,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          {chunk.map((item, index, arr) => (
-            <React.Fragment key={index}>
-              {renderItem(item, index, arr)}
-            </React.Fragment>
-          ))}
-        </View>
-      ))}
+      {data.length > 0 ? (
+        data.map((chunk, index) => (
+          <View
+            key={index}
+            style={{
+              marginBottom: rowGap,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {chunk.map((item, index, arr) => (
+              <React.Fragment key={index}>
+                {renderItem(item, index, arr)}
+              </React.Fragment>
+            ))}
+          </View>
+        ))
+      ) : (
+        <Text style={{ textAlign: "center", color: grey3 }}>
+          {noDataMessage ?? "Data not available."}
+        </Text>
+      )}
     </View>
   );
 }
