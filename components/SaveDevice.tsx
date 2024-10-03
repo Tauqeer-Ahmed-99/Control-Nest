@@ -1,9 +1,9 @@
 import Tile from "@/components/Tile";
-import useAuth from "@/hooks/useAuth";
 import useDeviceMutation from "@/hooks/useDeviceMutation";
 import { useRoomData } from "@/hooks/useHouse";
 import { ApiRoutes } from "@/routes/routes";
 import { Device as DeviceType } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
@@ -29,7 +29,7 @@ const SaveDevice = ({
   const queryClient = useQueryClient();
   const { mutate: mutateDevice, isPending: isConfigureDeviceLoading } =
     useDeviceMutation();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
 
   const saveDeviceConfig = useCallback(async () => {
     if (device?.is_scheduled) {
@@ -47,10 +47,8 @@ const SaveDevice = ({
     mutateDevice(
       {
         houseId: room?.house_id,
-        userId: userProfile?.id,
-        userName: `${userProfile?.given_name ?? ""} ${
-          userProfile?.family_name ?? ""
-        }`.trim(),
+        userId: user?.id,
+        userName: user?.fullName,
         deviceId: device?.device_id,
         deviceName: deviceNameRef.current,
         pinNumber: device?.pin_number,

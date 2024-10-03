@@ -1,8 +1,8 @@
-import useAuth from "@/hooks/useAuth";
 import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
 import { ApiRoutes, getTypedRoute, Routes } from "@/routes/routes";
 import { Device, ResponseStatusCodes } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import { Text } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -11,7 +11,7 @@ import Card from "./Card";
 import Icon from "./Icon";
 
 const DeviceCard = ({ device }: { device: Device }) => {
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const queryClient = useQueryClient();
   const room = useRoomData(device.room_id);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
@@ -20,8 +20,8 @@ const DeviceCard = ({ device }: { device: Device }) => {
     switchDevice(
       {
         houseId: room?.house_id,
-        userId: userProfile?.id,
-        userName: userProfile?.given_name,
+        userId: user?.id,
+        userName: user?.fullName,
         deviceId: device.device_id,
         deviceName: device.device_name,
         statusFrom: device.status,

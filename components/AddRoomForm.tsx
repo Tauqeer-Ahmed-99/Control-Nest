@@ -1,7 +1,7 @@
 import useAddRoomMutation from "@/hooks/useAddRoomMutation";
-import useAuth from "@/hooks/useAuth";
 import { useHouseData } from "@/hooks/useHouse";
 import { ApiRoutes } from "@/routes/routes";
+import { useUser } from "@clerk/clerk-expo";
 import { Button, Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
@@ -14,7 +14,7 @@ const AddRoomForm = ({ closeForm }: { closeForm: () => void }) => {
       colors: { secondary },
     },
   } = useTheme();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const house = useHouseData();
   const [roomName, setRoomName] = useState("");
   const { mutate: addRoom, isPending } = useAddRoomMutation();
@@ -24,8 +24,8 @@ const AddRoomForm = ({ closeForm }: { closeForm: () => void }) => {
   const handleSaveRoom = () => {
     addRoom(
       {
-        userId: userProfile?.id,
-        userName: userProfile?.given_name,
+        userId: user?.id,
+        userName: user?.fullName,
         houseId: house?.house_id,
         roomName,
       },

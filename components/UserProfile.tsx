@@ -1,10 +1,10 @@
-import useAuth from "@/hooks/useAuth";
+import { useUser } from "@clerk/clerk-expo";
 import { Image, Text, useTheme } from "@rneui/themed";
 import { View } from "react-native";
 import BorderContainer from "./BorderContainer";
 
 const UserProfile = () => {
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const { theme } = useTheme();
 
   return (
@@ -47,15 +47,13 @@ const UserProfile = () => {
         >
           <Image
             source={{
-              uri: userProfile?.picture,
+              uri: user?.imageUrl,
             }}
             style={{ height: "100%", width: "100%", borderRadius: 35 }}
           />
         </BorderContainer>
         <View>
-          <Text style={{ textAlign: "center" }}>
-            Hello {userProfile?.given_name} 👋
-          </Text>
+          <Text style={{ textAlign: "center" }}>Hello {user?.fullName} 👋</Text>
           <Text style={{ color: "grey", textAlign: "center" }}>
             Welcome to your home.
           </Text>

@@ -1,18 +1,17 @@
-import { useRoomsData } from "@/hooks/useHouse";
-import { Button, Text, useTheme } from "@rneui/themed";
-import React, { useMemo, useState } from "react";
-import { View } from "react-native";
-import Select from "./Select";
-import { HeaderPinConfig, Room } from "@/utils/models";
-import InputField from "./InputField";
-import useAvailableGPIOPins from "@/hooks/useAvailableGPIOPins";
-import useAuth from "@/hooks/useAuth";
 import useAddDeviceMutation from "@/hooks/useAddDeviceMutation";
-import { useQueryClient } from "@tanstack/react-query";
-import { ToastAndroid } from "react-native";
+import useAvailableGPIOPins from "@/hooks/useAvailableGPIOPins";
+import { useRoomsData } from "@/hooks/useHouse";
 import { ApiRoutes } from "@/routes/routes";
+import { HeaderPinConfig, Room } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
+import { Button, Text, useTheme } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
+import React, { useMemo, useState } from "react";
+import { ToastAndroid, View } from "react-native";
+import InputField from "./InputField";
 import MessageContainer from "./MessageContainer";
+import Select from "./Select";
 
 const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   const {
@@ -21,7 +20,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
     },
   } = useTheme();
 
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const { roomId } = useLocalSearchParams();
   const rooms = useRoomsData();
   const room = useMemo(
@@ -33,7 +32,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   );
   const [deviceName, setDeviceName] = useState("");
   const { data: availableGPIOPins } = useAvailableGPIOPins({
-    userId: userProfile?.id as string,
+    userId: user?.id as string,
   });
 
   const gpioPin = useMemo(
@@ -52,8 +51,8 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
     addDevice(
       {
         houseId: selectedRoom?.house_id,
-        userId: userProfile?.id,
-        userName: userProfile?.given_name,
+        userId: user?.id,
+        userName: user?.fullName,
         roomId: selectedRoom?.room_id,
         pinNumber: selectedGPIOPin?.gpio_pin_number,
         deviceName,

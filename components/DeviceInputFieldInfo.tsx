@@ -1,9 +1,9 @@
 import InputField from "@/components/InputField";
 import Select from "@/components/Select";
 import Tile from "@/components/Tile";
-import useAuth from "@/hooks/useAuth";
 import useAvailableGPIOPins from "@/hooks/useAvailableGPIOPins";
 import { Device as DeviceType, HeaderPinConfig } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import React, { useCallback, useMemo } from "react";
 
 const DeviceInputFieldsInfo = ({
@@ -15,9 +15,9 @@ const DeviceInputFieldsInfo = ({
   setDevice: React.Dispatch<React.SetStateAction<DeviceType | undefined>>;
   deviceNameRef: React.MutableRefObject<string>;
 }) => {
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const { data: availableGPIOPins, isLoading: isLoadingAvailableGPIOPins } =
-    useAvailableGPIOPins({ userId: userProfile?.id as string });
+    useAvailableGPIOPins({ userId: user?.id as string });
 
   const selectedPinConfig = useMemo(
     () =>

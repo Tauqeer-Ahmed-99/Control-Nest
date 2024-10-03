@@ -1,14 +1,46 @@
 import NMTLogo from "@/assets/svgs/nmt-logo.svg";
 import NMTSolutionsTextLogo from "@/components/NMTSolutionsTextLogo";
-import useAuth from "@/hooks/useAuth";
+import SignIn from "@/components/SignIn";
+import SignUp from "@/components/SignUp";
 import { Button, useTheme } from "@rneui/themed";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Auth() {
+const Steps = ({
+  activeStep,
+  nextStep,
+  prevStep,
+}: {
+  activeStep: number;
+  nextStep: () => void;
+  prevStep: () => void;
+}) => {
   const styles = useStyles();
-  const { login } = useAuth();
+  if (activeStep === 0) {
+    return (
+      <Button
+        size="lg"
+        buttonStyle={styles.button}
+        titleStyle={styles.buttonTitle}
+        containerStyle={styles.buttonContainer}
+        onPress={nextStep}
+      >
+        Get Started
+      </Button>
+    );
+  }
+  if (activeStep === 1) {
+    return <SignIn nextStep={nextStep} prevStep={prevStep} />;
+  }
+  if (activeStep === 2) {
+    return <SignUp prevStep={prevStep} />;
+  }
+};
+
+export default function Auth() {
+  const [step, setStep] = useState(0);
+  const styles = useStyles();
 
   return (
     <View style={styles.container}>
@@ -18,16 +50,12 @@ export default function Auth() {
         <NMTSolutionsTextLogo />
         <Text style={styles.heading}>Home Automation System</Text>
       </View>
-      <View style={styles.bottomSheet}>
-        <Button
-          size="lg"
-          buttonStyle={styles.button}
-          titleStyle={styles.buttonTitle}
-          containerStyle={styles.buttonContainer}
-          onPress={login}
-        >
-          Get Started
-        </Button>
+      <View style={[styles.bottomSheet, step !== 0 && { height: "auto" }]}>
+        <Steps
+          activeStep={step}
+          nextStep={() => setStep((step) => step + 1)}
+          prevStep={() => setStep((step) => step - 1)}
+        />
       </View>
     </View>
   );

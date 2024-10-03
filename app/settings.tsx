@@ -1,14 +1,14 @@
+import InputField from "@/components/InputField";
 import Tile from "@/components/Tile";
+import useMobileStorageData from "@/hooks/useMobileStorageData";
+import { useClerk } from "@clerk/clerk-expo";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Entypo from "@expo/vector-icons/Entypo";
-import InputField from "@/components/InputField";
-import useMobileStorageData from "@/hooks/useMobileStorageData";
-import useAuth from "@/hooks/useAuth";
 
 enum SettingOption {
   LogoutUser = "Logout User",
@@ -25,7 +25,7 @@ interface SettingItem {
 }
 
 const Settings = () => {
-  const { logout } = useAuth();
+  const { signOut } = useClerk();
   const { data: ctrlDvcName } = useMobileStorageData("controller-device-name");
   const { data: ctrlDvcURL } = useMobileStorageData("controller-device-url");
   const [controllerDeviceName, setControllerDeviceName] = useState("");
@@ -57,7 +57,8 @@ const Settings = () => {
         <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
       ),
       onAction: () => {
-        logout();
+        // logout();
+        signOut();
       },
     },
     {

@@ -1,8 +1,8 @@
 import Tile from "@/components/Tile";
-import useAuth from "@/hooks/useAuth";
 import { useRoomData } from "@/hooks/useHouse";
 import useRemoveDeviceMutation from "@/hooks/useRemoveDeviceMutation";
 import { ApiRoutes } from "@/routes/routes";
+import { useUser } from "@clerk/clerk-expo";
 import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
@@ -20,7 +20,7 @@ const RemoveDevice = () => {
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const { mutate: removeDevice, isPending: isRemovingDevice } =
     useRemoveDeviceMutation();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
 
   const queryClient = useQueryClient();
 
@@ -28,10 +28,8 @@ const RemoveDevice = () => {
     setIsConfirmationOpen(false);
     removeDevice(
       {
-        userId: userProfile?.id,
-        userName: `${userProfile?.given_name ?? ""} ${
-          userProfile?.family_name ?? ""
-        }`.trim(),
+        userId: user?.id,
+        userName: user?.fullName,
         houseId: room?.house_id,
         roomId,
         deviceId,

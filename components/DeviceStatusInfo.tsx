@@ -1,10 +1,10 @@
 import Switch from "@/components/Switch";
 import Tile from "@/components/Tile";
-import useAuth from "@/hooks/useAuth";
 import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
 import { ApiRoutes } from "@/routes/routes";
 import { Device as DeviceType, ResponseStatusCodes } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import { Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
@@ -24,7 +24,7 @@ const DeviceStatusInfo = ({
     },
   } = useTheme();
   const { roomId } = useLocalSearchParams();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const room = useRoomData(roomId as string);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
 
@@ -39,8 +39,8 @@ const DeviceStatusInfo = ({
       switchDevice(
         {
           houseId: room?.house_id,
-          userId: userProfile?.id,
-          userName: userProfile?.given_name,
+          userId: user?.id,
+          userName: user?.fullName,
           deviceId: device?.device_id,
           deviceName: device?.device_name,
           statusFrom: device?.status,
@@ -90,7 +90,7 @@ const DeviceStatusInfo = ({
         },
       );
     },
-    [room?.house_id, userProfile?.id, userProfile?.given_name, device?.status],
+    [room?.house_id, user?.id, user?.fullName, device?.status],
   );
 
   return (

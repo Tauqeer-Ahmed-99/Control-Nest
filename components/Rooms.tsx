@@ -1,15 +1,15 @@
+import useHouse from "@/hooks/useHouse";
+import { getTypedRoute, Routes } from "@/routes/routes";
+import { useUser } from "@clerk/clerk-expo";
 import { Text, useTheme } from "@rneui/themed";
+import { router } from "expo-router";
 import React from "react";
 import { useWindowDimensions, View } from "react-native";
-import useAuth from "@/hooks/useAuth";
-import useHouse from "@/hooks/useHouse";
 import Grid from "./Grid";
 import Header from "./Header";
-import RoomCard from "./RoomCard";
-import { router } from "expo-router";
-import { getTypedRoute, Routes } from "@/routes/routes";
 import LoadingSkeleton from "./LoadingSkeleton";
 import MessageContainer from "./MessageContainer";
+import RoomCard from "./RoomCard";
 
 const GAP = 30;
 const PADDING_HORIZONTAL = 12 * 2;
@@ -20,9 +20,9 @@ const Rooms = () => {
       colors: { grey3 },
     },
   } = useTheme();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const { data, isPending, error } = useHouse({
-    userId: userProfile?.id as string,
+    userId: user?.id as string,
   });
   const { width } = useWindowDimensions();
 
