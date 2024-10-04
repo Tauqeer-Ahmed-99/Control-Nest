@@ -6,6 +6,7 @@ import Feather from "@expo/vector-icons/Feather";
 import { isClerkAPIResponseError, useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import InputField from "./InputField";
+import { getTypedRoute, Routes } from "@/routes/routes";
 
 const SignUp = ({ prevStep }: { prevStep: () => void }) => {
   const {
@@ -18,6 +19,7 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -28,6 +30,7 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
     }
 
     try {
+      setIsLoading(true);
       await signUp.create({
         emailAddress,
         password,
@@ -36,12 +39,14 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
       setPendingVerification(true);
+      setIsLoading(false);
       setError("");
     } catch (err: any) {
       if (isClerkAPIResponseError(err)) {
         setError(err.errors[0].longMessage ?? err.errors[0].message);
       }
       console.log("ERROR", JSON.stringify(err, null, 2));
+      setIsLoading(false);
     }
   };
 
@@ -51,14 +56,15 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
     }
 
     try {
+      setIsLoading(true);
       const completeSignUp = await signUp.attemptEmailAddressVerification({
         code,
       });
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-
-        // router.replace("/");
+        // router.replace(getTypedRoute(Routes.HouseLogin));
+        setError("");
       } else {
         setError(
           (completeSignUp as any)?.errors?.[0]?.longMessage ??
@@ -67,10 +73,12 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
         );
         console.log("ERROR", JSON.stringify(completeSignUp, null, 2));
       }
+      setIsLoading(false);
     } catch (err: any) {
       if (isClerkAPIResponseError(err))
         setError(err.errors[0].longMessage ?? err.errors[0].message);
       console.log("ERROR", JSON.stringify(err, null, 2));
+      setIsLoading(false);
     }
   };
 
@@ -85,7 +93,7 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
         >
           Sign Up
         </Text>
-        <TouchableOpacity onPress={prevStep}>
+        <TouchableOpacity disabled={isLoading} onPress={prevStep}>
           <Feather name="arrow-left" size={24} color={grey3} />
         </TouchableOpacity>
       </View>
@@ -96,19 +104,22 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
             value={emailAddress}
             placeholder="Email..."
             onChangeText={(email) => setEmailAddress(email)}
+            disabled={isLoading}
           />
           <InputField
             value={password}
             placeholder="Password..."
             secureTextEntry={true}
             onChangeText={(password) => setPassword(password)}
+            disabled={isLoading}
           />
           <Button
             title="Sign Up"
+            loading={isLoading}
             buttonStyle={styles.button}
             containerStyle={styles.buttonContainer}
             titleStyle={styles.buttonTitle}
-            onPress={onSignUpPress}
+            onPress={!isLoading ? onSignUpPress : undefined}
           />
         </>
       )}
@@ -123,13 +134,14 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
             value={code}
             placeholder="Code..."
             onChangeText={(code) => setCode(code)}
+            disabled={isLoading}
           />
           <Button
             title="Verify Email"
             buttonStyle={styles.button}
             containerStyle={styles.buttonContainer}
             titleStyle={styles.buttonTitle}
-            onPress={onPressVerify}
+            onPress={!isLoading ? onPressVerify : undefined}
           />
         </>
       )}
@@ -138,7 +150,7 @@ const SignUp = ({ prevStep }: { prevStep: () => void }) => {
         buttonStyle={styles.secondaryButton}
         containerStyle={styles.buttonContainer}
         titleStyle={styles.secondaryButtonTitle}
-        onPress={prevStep}
+        onPress={!isLoading ? prevStep : undefined}
       >
         Already have an account? Login Instead.
       </Button>

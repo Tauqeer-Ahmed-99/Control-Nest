@@ -57,7 +57,6 @@ const Settings = () => {
         <MaterialIcons name="keyboard-arrow-right" size={24} color="grey" />
       ),
       onAction: () => {
-        // logout();
         signOut();
       },
     },
