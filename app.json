@@ -17,15 +17,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/nmt-logo.png",
+        "backgroundColor": "#232228"
       },
       "package": "com.nmthas.mobile"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/nmt-logo.png"
     },
     "plugins": [
       "expo-router",
