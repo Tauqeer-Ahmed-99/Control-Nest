@@ -3,10 +3,10 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
 
 import "react-native-reanimated";
 
+import SplashProvider from "@/components/SplashProvider";
 import AuthProvider from "@/context/AuthContext";
 import SocketProvider from "@/context/SocketContext";
 import routes, { Routes } from "@/routes/routes";
@@ -45,7 +45,7 @@ const tokenCache = {
 export default function RootLayout() {
   const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 
-  const [loaded] = useFonts({
+  const [isFontsLoaded] = useFonts({
     Lexend_100Thin: require("@expo-google-fonts/lexend/Lexend_100Thin.ttf"),
     Lexend_200ExtraLight: require("@expo-google-fonts/lexend/Lexend_200ExtraLight.ttf"),
     Lexend_300Light: require("@expo-google-fonts/lexend/Lexend_300Light.ttf"),
@@ -56,16 +56,6 @@ export default function RootLayout() {
     Lexend_800ExtraBold: require("@expo-google-fonts/lexend/Lexend_800ExtraBold.ttf"),
     Lexend_900Black: require("@expo-google-fonts/lexend/Lexend_900Black.ttf"),
   });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
 
   const getHeaderBackgroundColor = (route: Routes) => {
     switch (route) {
@@ -91,7 +81,7 @@ export default function RootLayout() {
       Text: {
         style: {
           color: "#ffffff",
-          fontFamily: "Lexend_400Regular",
+          // fontFamily: "Lexend_400Regular",
         },
       },
     },
@@ -104,46 +94,51 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-        <ClerkLoaded>
-          <AuthProvider>
-            <SocketProvider>
-              <SafeAreaProvider>
-                <ThemeProvider theme={theme}>
-                  <Stack>
-                    {routes.map((route) => (
-                      <Stack.Screen
-                        key={route.path}
-                        name={route.path}
-                        options={{
-                          headerShown: route.showheader ?? false,
-                          headerTintColor: "#ffffff",
-                          headerTitle: route.label,
-                          headerTitleAlign: "center",
-                          // headerLeft: getHeaderLeft(route),
-                          // headerRight: getHeaderRight(route),
-                          headerShadowVisible: false,
-                          headerTitleStyle: {
-                            color: "#fff",
-                            fontFamily: "Lexend_500Medium",
-                          },
-                          headerStyle: {
-                            backgroundColor: getHeaderBackgroundColor(
-                              route.path,
-                            ),
-                          },
-                          statusBarTranslucent: true,
-                        }}
-                      />
-                    ))}
-                  </Stack>
-                </ThemeProvider>
-              </SafeAreaProvider>
-            </SocketProvider>
-          </AuthProvider>
-        </ClerkLoaded>
-      </ClerkProvider>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <ThemeProvider theme={theme}>
+        <QueryClientProvider client={queryClient}>
+          <ClerkProvider
+            publishableKey={publishableKey}
+            tokenCache={tokenCache}
+          >
+            <SplashProvider isFontsLoaded={isFontsLoaded}>
+              <ClerkLoaded>
+                <AuthProvider>
+                  <SocketProvider>
+                    <Stack>
+                      {routes.map((route) => (
+                        <Stack.Screen
+                          key={route.path}
+                          name={route.path}
+                          options={{
+                            headerShown: route.showheader ?? false,
+                            headerTintColor: "#ffffff",
+                            headerTitle: route.label,
+                            headerTitleAlign: "center",
+                            // headerLeft: getHeaderLeft(route),
+                            // headerRight: getHeaderRight(route),
+                            headerShadowVisible: false,
+                            headerTitleStyle: {
+                              color: "#fff",
+                              fontFamily: "Lexend_500Medium",
+                            },
+                            headerStyle: {
+                              backgroundColor: getHeaderBackgroundColor(
+                                route.path,
+                              ),
+                            },
+                            statusBarTranslucent: true,
+                          }}
+                        />
+                      ))}
+                    </Stack>
+                  </SocketProvider>
+                </AuthProvider>
+              </ClerkLoaded>
+            </SplashProvider>
+          </ClerkProvider>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
