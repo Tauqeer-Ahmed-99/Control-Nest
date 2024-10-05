@@ -19,6 +19,7 @@ export enum HTTPStatus {
   NotFound = 400,
   Forbidden = 403,
   BadRequest = 404,
+  UnprocessableEntity = 422,
   ServerError = 500,
   ServiceUnavailable = 503,
 }
@@ -29,6 +30,7 @@ export const ExpectedHTTPStatuses: HTTPStatus[] = [
   HTTPStatus.NotFound,
   HTTPStatus.Forbidden,
   HTTPStatus.BadRequest,
+  HTTPStatus.UnprocessableEntity,
   HTTPStatus.ServerError,
   HTTPStatus.ServiceUnavailable,
 ];
