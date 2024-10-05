@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/nmt-logo.png",
+        "foregroundImage": "./assets/images/android-icon.png",
         "backgroundColor": "#232228"
       },
       "package": "com.nmthas.mobile"
