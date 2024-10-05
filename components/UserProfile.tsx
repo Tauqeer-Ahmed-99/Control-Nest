@@ -2,10 +2,12 @@ import { useUser } from "@clerk/clerk-expo";
 import { Image, Text, useTheme } from "@rneui/themed";
 import { View } from "react-native";
 import BorderContainer from "./BorderContainer";
+import useUsername from "@/hooks/useUsername";
 
 const UserProfile = () => {
   const { user } = useUser();
   const { theme } = useTheme();
+  const username = useUsername();
 
   return (
     <View
@@ -53,7 +55,7 @@ const UserProfile = () => {
           />
         </BorderContainer>
         <View>
-          <Text style={{ textAlign: "center" }}>Hello {user?.fullName} 👋</Text>
+          <Text style={{ textAlign: "center" }}>Hello {username} 👋</Text>
           <Text style={{ color: "grey", textAlign: "center" }}>
             Welcome to your home.
           </Text>

@@ -1,6 +1,7 @@
 import Tile from "@/components/Tile";
 import useDeviceMutation from "@/hooks/useDeviceMutation";
 import { useRoomData } from "@/hooks/useHouse";
+import useUsername from "@/hooks/useUsername";
 import { ApiRoutes } from "@/routes/routes";
 import { Device as DeviceType } from "@/utils/models";
 import { useUser } from "@clerk/clerk-expo";
@@ -30,6 +31,7 @@ const SaveDevice = ({
   const { mutate: mutateDevice, isPending: isConfigureDeviceLoading } =
     useDeviceMutation();
   const { user } = useUser();
+  const username = useUsername();
 
   const saveDeviceConfig = useCallback(async () => {
     if (device?.is_scheduled) {
@@ -48,7 +50,7 @@ const SaveDevice = ({
       {
         houseId: room?.house_id,
         userId: user?.id,
-        userName: user?.fullName,
+        userName: username,
         deviceId: device?.device_id,
         deviceName: deviceNameRef.current,
         pinNumber: device?.pin_number,

@@ -9,19 +9,21 @@ import { router } from "expo-router";
 import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
+import useUsername from "@/hooks/useUsername";
 
 const DeviceCard = ({ device }: { device: Device }) => {
   const { user } = useUser();
   const queryClient = useQueryClient();
   const room = useRoomData(device.room_id);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
+  const username = useUsername();
 
   const handleOnChange = (value: boolean) => {
     switchDevice(
       {
         houseId: room?.house_id,
         userId: user?.id,
-        userName: user?.fullName,
+        userName: username,
         deviceId: device.device_id,
         deviceName: device.device_name,
         statusFrom: device.status,

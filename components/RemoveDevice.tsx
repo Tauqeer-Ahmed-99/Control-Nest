@@ -1,6 +1,7 @@
 import Tile from "@/components/Tile";
 import { useRoomData } from "@/hooks/useHouse";
 import useRemoveDeviceMutation from "@/hooks/useRemoveDeviceMutation";
+import useUsername from "@/hooks/useUsername";
 import { ApiRoutes } from "@/routes/routes";
 import { useUser } from "@clerk/clerk-expo";
 import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
@@ -21,6 +22,7 @@ const RemoveDevice = () => {
   const { mutate: removeDevice, isPending: isRemovingDevice } =
     useRemoveDeviceMutation();
   const { user } = useUser();
+  const username = useUsername();
 
   const queryClient = useQueryClient();
 
@@ -29,7 +31,7 @@ const RemoveDevice = () => {
     removeDevice(
       {
         userId: user?.id,
-        userName: user?.fullName,
+        userName: username,
         houseId: room?.house_id,
         roomId,
         deviceId,

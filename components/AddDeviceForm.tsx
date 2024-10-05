@@ -12,6 +12,7 @@ import { ToastAndroid, View } from "react-native";
 import InputField from "./InputField";
 import MessageContainer from "./MessageContainer";
 import Select from "./Select";
+import useUsername from "@/hooks/useUsername";
 
 const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   const {
@@ -34,6 +35,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
   const { data: availableGPIOPins } = useAvailableGPIOPins({
     userId: user?.id as string,
   });
+  const username = useUsername();
 
   const gpioPin = useMemo(
     () => availableGPIOPins?.data?.[0],
@@ -52,7 +54,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
       {
         houseId: selectedRoom?.house_id,
         userId: user?.id,
-        userName: user?.fullName,
+        userName: username,
         roomId: selectedRoom?.room_id,
         pinNumber: selectedGPIOPin?.gpio_pin_number,
         deviceName,

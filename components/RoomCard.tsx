@@ -9,12 +9,14 @@ import { router } from "expo-router";
 import { ToastAndroid, TouchableOpacity, View } from "react-native";
 import Card from "./Card";
 import Icon from "./Icon";
+import useUsername from "@/hooks/useUsername";
 
 const RoomCard = ({ room }: { room: Room }) => {
   const { user } = useUser();
   const queryClient = useQueryClient();
   const defaultDevice = useDeviceData(room.room_id, "default");
   const { mutate: switchDevice } = useSwitchDeviceMutation();
+  const username = useUsername();
 
   const handleOnChange = (value: boolean) => {
     if (defaultDevice) {
@@ -22,7 +24,7 @@ const RoomCard = ({ room }: { room: Room }) => {
         {
           houseId: room?.house_id,
           userId: user?.id,
-          userName: user?.fullName,
+          userName: username,
           deviceId: defaultDevice.device_id,
           deviceName: defaultDevice.device_name,
           statusFrom: defaultDevice.status,

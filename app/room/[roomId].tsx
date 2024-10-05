@@ -6,6 +6,7 @@ import MessageContainer from "@/components/MessageContainer";
 import { useRoomData } from "@/hooks/useHouse";
 import useRemoveRoomMutation from "@/hooks/useRemoveRoomMutation";
 import useUpdateHeaderTitle from "@/hooks/useUpdateHeaderTitle";
+import useUsername from "@/hooks/useUsername";
 import { ApiRoutes } from "@/routes/routes";
 import { useUser } from "@clerk/clerk-expo";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -29,6 +30,7 @@ const Room = () => {
     useState(false);
   const { mutate: removeRoom, isPending: isDeletingRoom } =
     useRemoveRoomMutation();
+  const username = useUsername();
 
   const queryClient = useQueryClient();
 
@@ -36,7 +38,7 @@ const Room = () => {
     removeRoom(
       {
         userId: user?.id,
-        userName: user?.fullName,
+        userName: username,
         houseId: room?.house_id,
         roomId: roomId,
         roomName: room?.room_name,

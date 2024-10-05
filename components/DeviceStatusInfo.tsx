@@ -2,6 +2,7 @@ import Switch from "@/components/Switch";
 import Tile from "@/components/Tile";
 import { UserHouseResponse, useRoomData } from "@/hooks/useHouse";
 import useSwitchDeviceMutation from "@/hooks/useSwitchDeviceMutation";
+import useUsername from "@/hooks/useUsername";
 import { ApiRoutes } from "@/routes/routes";
 import { Device as DeviceType, ResponseStatusCodes } from "@/utils/models";
 import { useUser } from "@clerk/clerk-expo";
@@ -27,6 +28,7 @@ const DeviceStatusInfo = ({
   const { user } = useUser();
   const room = useRoomData(roomId as string);
   const { mutate: switchDevice } = useSwitchDeviceMutation();
+  const username = useUsername();
 
   const queryClient = useQueryClient();
 
@@ -40,7 +42,7 @@ const DeviceStatusInfo = ({
         {
           houseId: room?.house_id,
           userId: user?.id,
-          userName: user?.fullName,
+          userName: username,
           deviceId: device?.device_id,
           deviceName: device?.device_name,
           statusFrom: device?.status,
@@ -90,7 +92,7 @@ const DeviceStatusInfo = ({
         },
       );
     },
-    [room?.house_id, user?.id, user?.fullName, device?.status],
+    [room?.house_id, user?.id, username, device?.status],
   );
 
   return (
