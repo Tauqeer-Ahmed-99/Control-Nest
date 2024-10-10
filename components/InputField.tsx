@@ -1,6 +1,6 @@
 import { Input, useTheme } from "@rneui/themed";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TextInputProps } from "react-native";
 
 const InputField = ({
   label,
@@ -9,6 +9,8 @@ const InputField = ({
   defaultValue,
   onChangeText,
   disabled,
+  secureTextEntry,
+  autoCapitalize,
 }: {
   label?: string;
   placeholder?: string;
@@ -16,6 +18,8 @@ const InputField = ({
   defaultValue?: string;
   onChangeText?: (text: string) => void;
   disabled?: boolean;
+  secureTextEntry?: boolean;
+  autoCapitalize?: TextInputProps["autoCapitalize"];
 }) => {
   const {
     theme: {
@@ -41,6 +45,8 @@ const InputField = ({
       defaultValue={defaultValue}
       onChangeText={onChangeText}
       disabled={disabled}
+      autoCapitalize={autoCapitalize}
+      secureTextEntry={secureTextEntry}
     />
   );
 };

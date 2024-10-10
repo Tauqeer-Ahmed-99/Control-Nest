@@ -1,7 +1,7 @@
-import useAuth from "@/hooks/useAuth";
 import useMobileStorageData from "@/hooks/useMobileStorageData";
 import { ApiRoutes } from "@/routes/routes";
 import { SocketEvent } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   PropsWithChildren,
@@ -44,7 +44,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   const { data: controllerDeviceUrl } = useMobileStorageData(
     "controller-device-url",
   );
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -64,10 +64,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
 
     setNotifications((prevNotifs) => [newNotification, ...prevNotifs]);
 
-    if (
-      userProfile?.id === data.user_id ||
-      data.event === SocketEvent.USER_LEFT
-    )
+    if (user?.id === data.user_id || data.event === SocketEvent.USER_LEFT)
       return;
 
     ToastAndroid.showWithGravity(
@@ -238,9 +235,9 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     let socket: WebSocket;
 
-    if (controllerDeviceUrl && userProfile?.id) {
+    if (controllerDeviceUrl && user?.id) {
       const webSocketUrl = `${controllerDeviceUrl?.replace("http", "ws")}ws/${
-        userProfile?.id
+        user?.id
       }`;
 
       socket = new WebSocket(webSocketUrl);
@@ -272,7 +269,7 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
       socket?.close();
       setIsConnected(false);
     };
-  }, [controllerDeviceUrl, userProfile]);
+  }, [controllerDeviceUrl, user]);
 
   return (
     <SocketContext.Provider value={{ socket, isConnected, notifications }}>

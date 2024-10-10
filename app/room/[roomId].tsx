@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-import { ToastAndroid, TouchableOpacity, View } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import Grid from "@/components/Grid";
-import { useRoomData } from "@/hooks/useHouse";
-import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
-import DeviceCard from "@/components/DeviceCard";
-import { ScrollView } from "react-native-virtualized-view";
-import useUpdateHeaderTitle from "@/hooks/useUpdateHeaderTitle";
 import AvailableRooms from "@/components/AvailableRooms";
 import BottomNavigation from "@/components/BottomNavigation";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import useRemoveRoomMutation from "@/hooks/useRemoveRoomMutation";
-import { useQueryClient } from "@tanstack/react-query";
-import { ApiRoutes } from "@/routes/routes";
-import useAuth from "@/hooks/useAuth";
+import DeviceCard from "@/components/DeviceCard";
+import Grid from "@/components/Grid";
 import MessageContainer from "@/components/MessageContainer";
+import { useRoomData } from "@/hooks/useHouse";
+import useRemoveRoomMutation from "@/hooks/useRemoveRoomMutation";
+import useUpdateHeaderTitle from "@/hooks/useUpdateHeaderTitle";
+import useUsername from "@/hooks/useUsername";
+import { ApiRoutes } from "@/routes/routes";
+import { useUser } from "@clerk/clerk-expo";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { BottomSheet, Button, Text, useTheme } from "@rneui/themed";
+import { useQueryClient } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import { ToastAndroid, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 
 const Room = () => {
   const {
@@ -23,20 +24,21 @@ const Room = () => {
     },
   } = useTheme();
   const { roomId } = useLocalSearchParams();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const room = useRoomData(roomId as string);
   const [isDeleteRoomConfirmationOpen, setIsDeleteRoomConfirmationOpen] =
     useState(false);
   const { mutate: removeRoom, isPending: isDeletingRoom } =
     useRemoveRoomMutation();
+  const username = useUsername();
 
   const queryClient = useQueryClient();
 
   const deleteRoom = () => {
     removeRoom(
       {
-        userId: userProfile?.id,
-        userName: userProfile?.given_name,
+        userId: user?.id,
+        userName: username,
         houseId: room?.house_id,
         roomId: roomId,
         roomName: room?.room_name,

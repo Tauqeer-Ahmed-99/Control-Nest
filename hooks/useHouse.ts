@@ -1,8 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiRoutes } from "@/routes/routes";
-import useApiQuery from "./useApiQuery";
+import { useUser } from "@clerk/clerk-expo";
 import { ApiResponse, House } from "../utils/models";
-import useAuth from "./useAuth";
+import useApiQuery from "./useApiQuery";
 
 export interface UserHouseSearchParams {
   userId: string;
@@ -17,29 +16,29 @@ const useHouse = (searchParams: UserHouseSearchParams) => {
 };
 
 export const useHouseData = () => {
-  const { userProfile } = useAuth();
-  const { data } = useHouse({ userId: userProfile?.id as string });
+  const { user } = useUser();
+  const { data } = useHouse({ userId: user?.id as string });
 
   return data?.data;
 };
 
 export const useRoomData = (roomId: string) => {
-  const { userProfile } = useAuth();
-  const { data } = useHouse({ userId: userProfile?.id as string });
+  const { user } = useUser();
+  const { data } = useHouse({ userId: user?.id as string });
 
   return data?.data?.rooms.find((room) => room.room_id === roomId);
 };
 
 export const useRoomsData = () => {
-  const { userProfile } = useAuth();
-  const { data } = useHouse({ userId: userProfile?.id as string });
+  const { user } = useUser();
+  const { data } = useHouse({ userId: user?.id as string });
 
   return data?.data?.rooms;
 };
 
 export const useDeviceData = (roomId: string, deviceId: string | "default") => {
-  const { userProfile } = useAuth();
-  const { data } = useHouse({ userId: userProfile?.id as string });
+  const { user } = useUser();
+  const { data } = useHouse({ userId: user?.id as string });
 
   const devices = data?.data?.rooms?.find(
     (room) => room.room_id === roomId,
@@ -53,8 +52,8 @@ export const useDeviceData = (roomId: string, deviceId: string | "default") => {
 };
 
 export const useDevicesData = () => {
-  const { userProfile } = useAuth();
-  const { data } = useHouse({ userId: userProfile?.id as string });
+  const { user } = useUser();
+  const { data } = useHouse({ userId: user?.id as string });
 
   return data?.data?.rooms.flatMap((room) => room.devices);
 };

@@ -2,7 +2,6 @@ import NMTLogo from "@/assets/svgs/nmt-logo.svg";
 import InputField from "@/components/InputField";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import NMTSolutionsTextLogo from "@/components/NMTSolutionsTextLogo";
-import useAuth from "@/hooks/useAuth";
 import useHouseLogin from "@/hooks/useHouseLogin";
 import useHouseMember from "@/hooks/useHouseMember";
 import useMobileStorageData, {
@@ -10,6 +9,7 @@ import useMobileStorageData, {
 } from "@/hooks/useMobileStorageData";
 import { getTypedRoute, Routes } from "@/routes/routes";
 import { ResponseStatusCodes } from "@/utils/models";
+import { useUser } from "@clerk/clerk-expo";
 import { Button, Text, useTheme } from "@rneui/themed";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -22,12 +22,12 @@ const HouseLogin = () => {
   const [controllerDeviceName, setControllerDeviceName] = useState("");
   const [housePassword, setHousePassword] = useState("");
   const styles = useStyles();
-  const { userProfile } = useAuth();
+  const { user } = useUser();
   const { data: controllerDeviceURL, isLoading: isControllerDeviceURLLoading } =
     useMobileStorageData("controller-device-url");
   const { data: houseMemberData, isLoading: isHouseMemberDataLoading } =
     useHouseMember({
-      userId: userProfile?.id as string,
+      userId: user?.id as string,
     });
   const { mutate: houseLogin, isPending: isHouseLoggingIn } = useHouseLogin();
   const controllerDeviceNameStorageMutation = useMobileStorageMutation(
@@ -52,7 +52,7 @@ const HouseLogin = () => {
       houseLogin(
         {
           searchParams: {
-            userId: userProfile?.id,
+            userId: user?.id,
             password: housePassword.trim(),
           },
         },

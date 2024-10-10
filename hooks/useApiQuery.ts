@@ -1,5 +1,9 @@
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import request, { ApiConfig, ExpectedHTTPStatuses } from "@/utils/network";
+import request, {
+  ApiConfig,
+  ExpectedHTTPStatuses,
+  HTTPStatus,
+} from "@/utils/network";
 import useMobileStorageData from "./useMobileStorageData";
 
 const useApiQuery = <T>(
@@ -17,9 +21,14 @@ const useApiQuery = <T>(
 
       if (!response.ok && !ExpectedHTTPStatuses.includes(response.status)) {
         const parsedRes = await response.json();
-        throw new Error(
-          response.status + " : " + parsedRes.message ?? response.statusText,
-        );
+        let errorMessage =
+          response.status + " : " + (parsedRes.message ?? response.statusText);
+        if (response.status === HTTPStatus.UnprocessableEntity) {
+          errorMessage = `${parsedRes?.detail?.[0]?.msg ?? response.status} : ${
+            parsedRes?.detail?.[0]?.loc?.[1] ?? response.statusText
+          }`;
+        }
+        throw new Error(errorMessage);
       }
 
       return response.json();

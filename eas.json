@@ -11,18 +11,14 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_KINDE_ISSUER_URL": "https://auth4nmt.kinde.com",
-        "EXPO_PUBLIC_KINDE_POST_CALLBACK_URL": "nmt-has-mobile://auth",
-        "EXPO_PUBLIC_KINDE_POST_LOGOUT_REDIRECT_URL": "nmt-has-mobile://auth",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_live_Y2xlcmsubm10LXNvbHV0aW9ucy5pbiQ",
         "EXPO_PUBLIC_WEATHER_API_URL": "http://api.weatherapi.com/v1/current.json",
         "EXPO_PUBLIC_WEATHER_API_KEY": "26cb5accc5a844fb89f103640243108"
       }
     },
     "production": {
       "env": {
-        "EXPO_PUBLIC_KINDE_ISSUER_URL": "https://auth4nmt.kinde.com",
-        "EXPO_PUBLIC_KINDE_POST_CALLBACK_URL": "nmt-has-mobile://auth",
-        "EXPO_PUBLIC_KINDE_POST_LOGOUT_REDIRECT_URL": "nmt-has-mobile://auth",
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_live_Y2xlcmsubm10LXNvbHV0aW9ucy5pbiQ",
         "EXPO_PUBLIC_WEATHER_API_URL": "http://api.weatherapi.com/v1/current.json",
         "EXPO_PUBLIC_WEATHER_API_KEY": "26cb5accc5a844fb89f103640243108"
       }
