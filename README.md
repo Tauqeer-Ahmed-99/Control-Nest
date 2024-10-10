@@ -54,13 +54,13 @@ yarn install
 npm start
 ```
 
-OR
+- Or using yarn:
 
 ```bash
 yarn run start
 ```
 
--You can open the app on your mobile device using the Expo Go app by scanning the QR code generated in the terminal.
+- You can open the app on your mobile device using the Expo Go app by scanning the QR code generated in the terminal.
 
 ## Want to Contribute?
 
