@@ -1,7 +1,7 @@
 {
   "cli": {
-    "version": ">= 10.2.2",
-    "requireCommit": true
+    "version": ">= 12.5.1",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -17,6 +17,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "env": {
         "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_live_Y2xlcmsubm10LXNvbHV0aW9ucy5pbiQ",
         "EXPO_PUBLIC_WEATHER_API_URL": "http://api.weatherapi.com/v1/current.json",
