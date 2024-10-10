@@ -67,3 +67,7 @@ expo start
 5. Open a pull request.
 
 - Please check the issues section for existing bugs or features you'd like to work on.
+
+## License
+
+- This project is licensed under the MIT License. See the LICENSE file for more details.
