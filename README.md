@@ -1,50 +1,69 @@
-# Welcome to your Expo app 👋
+# Control Nest
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Control Nest** is the mobile app companion to **AutoPi Hub**, designed to provide an intuitive interface for managing and automating your home devices. It allows users to control devices, create rooms, and automate tasks from their mobile devices.
 
-## Get started
+## AutoPi Hub Integration
 
-1. Install dependencies
+Control Nest works with the **AutoPi Hub**, which is a Python-based home automation system running on a Raspberry Pi. To fully utilize Control Nest, you need to have the **AutoPi Hub** server set up.
 
-   ```bash
-   npm install
-   ```
+- Learn more about [AutoPi Hub](https://github.com/Tauqeer-Ahmed-99/AutoPi_Hub).
+- Visit the **AutoPi Hub** repository: [AutoPi Hub GitHub](https://github.com/Tauqeer-Ahmed-99/AutoPi_Hub).
 
-2. Start the app
+## Getting Started with Local Development
 
-   ```bash
-    npx expo start
-   ```
+To set up **Control Nest** for local development, follow the steps below:
 
-In the output, you'll find options to open the app in a
+### Prerequisites
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Node.js** (version 14.x or higher)
+- **npm** or **yarn** (package manager)
+- **Expo CLI** (for React Native Expo Go)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+If you don't have Expo CLI installed, you can install it globally using:
 
 ```bash
-npm run reset-project
+npm install -g expo-cli
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Clone the Repository
 
-## Learn more
+```bash
+git clone https://github.com/Tauqeer-Ahmed-99/Control-Nest.git
+cd Control-Nest
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Install Dependencies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Using npm:
 
-## Join the community
+```bash
+npm install
+```
 
-Join our community of developers creating universal apps.
+- Or using yarn:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+yarn install
+```
+
+### Install Dependencies
+
+- To start the development server:
+
+```bash
+expo start
+```
+
+-You can open the app on your mobile device using the Expo Go app by scanning the QR code generated in the terminal.
+
+## Want to Contribute?
+
+- We welcome contributions! If you're interested in improving Control Nest, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/feature-name or bug/bug-name`).
+3. Make your changes and commit them (`git commit -m 'added: feature name' or 'resolved: bug name'`).
+4. Push to the branch (`git push origin feature/feature-name or bug/bug-name`).
+5. Open a pull request.
+
+- Please check the issues section for existing bugs or features you'd like to work on.
