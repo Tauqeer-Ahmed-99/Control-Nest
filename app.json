@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Home Automation App",
-    "slug": "nmt-has-mobile",
+    "name": "Control Nest",
+    "slug": "control-nest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/nmt-logo.png",
-    "scheme": "nmt-has-mobile",
+    "scheme": "control-nest",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash-screen.png",
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/android-icon.png",
         "backgroundColor": "#232228"
       },
-      "package": "com.nmthas.mobile"
+      "package": "com.control.nest"
     },
     "web": {
       "bundler": "metro",
