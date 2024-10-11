@@ -149,8 +149,6 @@ const Summary = () => {
     ? devices.filter((device) => device.status).length.toString()
     : "0";
 
-  console.log(energyConsumptionStatus, energyConsumptionFetchStatus);
-
   summaryItems[2].primaryText = isEnergyConsumptionNotCalculate ? (
     "Calculate Now"
   ) : isEnergyConsumptionDataLoading ? (
