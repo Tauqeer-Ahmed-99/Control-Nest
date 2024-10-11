@@ -129,6 +129,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
         defaultValue=""
         onChangeText={(text) => setDeviceRating(text)}
         disabled={isPending}
+        keyboardType="number-pad"
       />
       <View
         style={{
