@@ -32,6 +32,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
     room ?? (rooms?.[0] as Room),
   );
   const [deviceName, setDeviceName] = useState("");
+  const [deviceRating, setDeviceRating] = useState("");
   const { data: availableGPIOPins } = useAvailableGPIOPins({
     userId: user?.id as string,
   });
@@ -58,6 +59,7 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
         roomId: selectedRoom?.room_id,
         pinNumber: selectedGPIOPin?.gpio_pin_number,
         deviceName,
+        wattage: isNaN(Number(deviceRating)) ? 0.0 : Number(deviceRating),
       },
       {
         onSuccess: (res) => {
@@ -120,6 +122,14 @@ const AddDeviceForm = ({ closeForm }: { closeForm: () => void }) => {
         defaultValue=""
         onChangeText={(text) => setDeviceName(text)}
         disabled={isPending}
+      />
+      <InputField
+        label="Pwer Consumption Rating"
+        placeholder="Enter in watt"
+        defaultValue=""
+        onChangeText={(text) => setDeviceRating(text)}
+        disabled={isPending}
+        keyboardType="number-pad"
       />
       <View
         style={{

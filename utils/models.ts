@@ -26,6 +26,7 @@ export interface Device {
   start_time: string;
   off_time: string;
   scheduledBy: string;
+  wattage: number;
   created_at: string;
   updated_at: string;
 }
@@ -100,6 +101,7 @@ export enum SocketEvent {
   CONFIGURE_DEVICE = "CONFIGURE_DEVICE",
   REMOVE_DEVICE = "REMOVE_DEVICE",
   USER_LEFT = "USER_LEFT",
+  ENERGY_CONSUMPTION_CALCULATED = "ENERGY_CONSUMPTION_CALCULATED",
 }
 
 export enum ResponseStatusCodes {

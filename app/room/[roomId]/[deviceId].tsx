@@ -23,6 +23,7 @@ const Device = () => {
   const deviceData = useDeviceData(roomId as string, deviceId as string);
   const [device, setDevice] = useState(deviceData);
   const deviceNameRef = useRef(device?.device_name ?? "");
+  const deviceWattageRef = useRef(device?.wattage?.toString() ?? "");
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -30,6 +31,12 @@ const Device = () => {
       setDevice(deviceData);
     }
   }, [JSON.stringify(deviceData)]);
+
+  useEffect(() => {
+    deviceNameRef.current = deviceData?.device_name ?? deviceNameRef.current;
+    deviceWattageRef.current =
+      deviceData?.wattage?.toString() ?? deviceWattageRef.current;
+  }, [deviceData?.device_name, deviceData?.wattage]);
 
   return (
     <View
@@ -46,6 +53,7 @@ const Device = () => {
             device={device}
             setDevice={setDevice}
             deviceNameRef={deviceNameRef}
+            deviceWattageRef={deviceWattageRef}
           />
           <DeviceStatusInfo device={device} setDevice={setDevice} />
           <DefaultDeviceInfo device={device} setDevice={setDevice} />
@@ -57,6 +65,7 @@ const Device = () => {
           <SaveDevice
             device={device}
             deviceNameRef={deviceNameRef}
+            deviceWattageRef={deviceWattageRef}
             setIsError={setIsError}
           />
           <DeviceUpdateHistory device={device} />

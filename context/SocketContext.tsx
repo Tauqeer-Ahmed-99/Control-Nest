@@ -1,6 +1,7 @@
+import { EnergyConsumptionData } from "@/hooks/useEnergyConsumption";
 import useMobileStorageData from "@/hooks/useMobileStorageData";
 import { ApiRoutes } from "@/routes/routes";
-import { SocketEvent } from "@/utils/models";
+import { ApiResponse, SocketEvent } from "@/utils/models";
 import { useUser } from "@clerk/clerk-expo";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -74,6 +75,21 @@ const SocketProvider = ({ children }: PropsWithChildren) => {
     );
 
     queryClient.invalidateQueries({ queryKey: [ApiRoutes.UserHouse] });
+
+    switch (data.event) {
+      case SocketEvent.ENERGY_CONSUMPTION_CALCULATED:
+        const energyConsumptionData: SocketEventData<EnergyConsumptionData> =
+          data;
+        queryClient.setQueryData(
+          [ApiRoutes.EnergyConsumption],
+          (oldData: ApiResponse<EnergyConsumptionData>) => ({
+            message: "Success",
+            status: "success",
+            status_code: 200,
+            data: energyConsumptionData,
+          }),
+        );
+    }
 
     // switch (data.event) {
     //   case SocketEvent.ADD_ROOM:

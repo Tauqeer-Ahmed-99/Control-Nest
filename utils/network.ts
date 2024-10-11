@@ -3,6 +3,7 @@ export interface ApiConfig {
   body?: BodyInit;
   method?: HTTPMethod;
   headers?: HeadersInit;
+  queryConfig?: { enabled: boolean };
 }
 
 export enum HTTPMethod {

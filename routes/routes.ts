@@ -24,6 +24,7 @@ export enum ApiRoutes {
   AddDevice = "/add-device",
   RemoveDevice = "/remove-device",
   AvailableGPIOPins = "/get-available-gpio-pins",
+  EnergyConsumption = "/get-energy-consumption",
 }
 
 export interface Route {

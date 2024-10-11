@@ -10,10 +10,12 @@ const DeviceInputFieldsInfo = ({
   device,
   setDevice,
   deviceNameRef,
+  deviceWattageRef,
 }: {
   device?: DeviceType;
   setDevice: React.Dispatch<React.SetStateAction<DeviceType | undefined>>;
   deviceNameRef: React.MutableRefObject<string>;
+  deviceWattageRef: React.MutableRefObject<string>;
 }) => {
   const { user } = useUser();
   const { data: availableGPIOPins, isLoading: isLoadingAvailableGPIOPins } =
@@ -50,6 +52,13 @@ const DeviceInputFieldsInfo = ({
     [device],
   );
 
+  const handleDeviceWattageChange = useCallback(
+    (text: string) => {
+      deviceWattageRef.current = text;
+    },
+    [device],
+  );
+
   const handleGPIOPinChange = useCallback(
     (newValue: any, index: number) => {
       setDevice(
@@ -66,6 +75,12 @@ const DeviceInputFieldsInfo = ({
         label="Device Name"
         defaultValue={deviceNameRef.current}
         onChangeText={handleDeviceNameChange}
+      />
+      <InputField
+        label="Consumption Rating"
+        defaultValue={deviceWattageRef.current}
+        onChangeText={handleDeviceWattageChange}
+        keyboardType="number-pad"
       />
       <Select
         label="GPIO Pin"

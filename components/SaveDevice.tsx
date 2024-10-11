@@ -14,10 +14,12 @@ import { ActivityIndicator, ToastAndroid, View } from "react-native";
 const SaveDevice = ({
   device,
   deviceNameRef,
+  deviceWattageRef,
   setIsError,
 }: {
   device?: DeviceType;
   deviceNameRef: React.MutableRefObject<string>;
+  deviceWattageRef: React.MutableRefObject<string>;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
@@ -60,6 +62,9 @@ const SaveDevice = ({
         daysScheduled: device?.days_scheduled ?? "",
         startTime: device?.start_time ?? "",
         offTime: device?.off_time ?? "",
+        wattage: isNaN(Number(deviceWattageRef.current))
+          ? 0.0
+          : Number(deviceWattageRef.current),
       },
       {
         onSuccess: (res) => {

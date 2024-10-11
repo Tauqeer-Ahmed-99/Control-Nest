@@ -1,6 +1,6 @@
 import { Input, useTheme } from "@rneui/themed";
 import React from "react";
-import { StyleSheet, TextInputProps } from "react-native";
+import { KeyboardTypeOptions, StyleSheet, TextInputProps } from "react-native";
 
 const InputField = ({
   label,
@@ -11,6 +11,7 @@ const InputField = ({
   disabled,
   secureTextEntry,
   autoCapitalize,
+  keyboardType,
 }: {
   label?: string;
   placeholder?: string;
@@ -20,6 +21,7 @@ const InputField = ({
   disabled?: boolean;
   secureTextEntry?: boolean;
   autoCapitalize?: TextInputProps["autoCapitalize"];
+  keyboardType?: KeyboardTypeOptions;
 }) => {
   const {
     theme: {
@@ -47,6 +49,7 @@ const InputField = ({
       disabled={disabled}
       autoCapitalize={autoCapitalize}
       secureTextEntry={secureTextEntry}
+      keyboardType={keyboardType}
     />
   );
 };
